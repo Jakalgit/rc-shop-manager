@@ -1,0 +1,158 @@
+import {Button, Col, Container, Row, Spinner} from "react-bootstrap";
+import {useEffect, useState} from "react";
+import type {RepairServiceResponse} from "../api/repair-service/types.ts";
+import {getServices, updateServices} from "../api/repair-service/repairServiceApi.ts";
+import Cookies from "universal-cookie";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+
+const RepairServices = () => {
+
+	const cookies = new Cookies();
+	const [loading, setLoading] = useState<boolean>(false);
+	const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
+	const [serviceItems, setServiceItems] = useState<RepairServiceResponse[]>([]);
+
+	const changeService = (id: number, text: string) => {
+		setServiceItems(prevState => prevState.map(el => {
+			if (el.id === id) {
+				return {
+					...el,
+					service: text,
+				}
+			} else return el;
+		}));
+	}
+
+	const changePrice = (id: number, text: string) => {
+		setServiceItems(prevState => prevState.map(el => {
+			if (el.id === id) {
+				return {
+					...el,
+					price: text,
+				}
+			} else return el;
+		}));
+	}
+
+	const addService = () => {
+		setServiceItems(prevState => [...prevState, {id: -Date.now(), service: "", price: ""}])
+	}
+
+	const deleteService = (id: number) => {
+		setServiceItems(prevState => prevState.filter(el => el.id !== id))
+	}
+
+	const saveRepairServices = async () => {
+		try {
+			setButtonLoading(true);
+			const act: string = cookies.get("act") || "";
+
+			await updateServices({items: serviceItems.map(({id, ...rest}) => rest), act});
+
+			alert("Successfully updated services");
+		} catch (e: any) {
+			alert(e?.response?.data?.message);
+			console.log(e);
+		}
+		setButtonLoading(false);
+	}
+
+	async function getData() {
+		try {
+			const response = await getServices();
+
+			setServiceItems(response);
+			setLoading(false);
+		} catch (e: any) {
+			alert(e?.response?.data?.message);
+			console.log(e);
+		}
+	}
+
+	useEffect(() => {
+		getData();
+	}, []);
+
+	if (loading) {
+		return (
+			<Spinner animation="border" role="status">
+				<span className="visually-hidden">Loading...</span>
+			</Spinner>
+		)
+	}
+
+	return (
+		<Container fluid>
+			<Row className="mb-3 mt-3">
+				<Col lg={6}>
+					<Button
+						className="w-100"
+						type="submit"
+						variant="primary"
+						onClick={addService}
+					>
+						Add new
+					</Button>
+				</Col>
+				<Col lg={6}>
+					<Button
+						className="w-100"
+						type="submit"
+						variant="primary"
+						onClick={saveRepairServices}
+					>
+						{buttonLoading ? (
+							<Spinner animation="border" role="status">
+								<span className="visually-hidden">Loading...</span>
+							</Spinner>
+						) : (
+							<>Save services</>
+						)}
+					</Button>
+				</Col>
+			</Row>
+			{serviceItems.map(item =>
+				<Row className="mt-4">
+					<Form.Group className="mb-3" as={Col} lg="6">
+						<Form.Label htmlFor="service">Service (id: {item.id})</Form.Label>
+						<InputGroup>
+							<Form.Control
+								id="service"
+								placeholder="Input service..."
+								aria-label="Service"
+								value={item.service}
+								onChange={(e) => changeService(item.id, e.target.value)}
+							/>
+						</InputGroup>
+					</Form.Group>
+					<Form.Group className="mb-3" as={Col} lg="6">
+						<Form.Label htmlFor="price">Price</Form.Label>
+						<InputGroup>
+							<Form.Control
+								id="price"
+								placeholder="Input price..."
+								aria-label="Price"
+								value={item.price}
+								onChange={(e) => changePrice(item.id, e.target.value)}
+							/>
+						</InputGroup>
+					</Form.Group>
+					<Col>
+						<Button
+							className="w-100"
+							type="submit"
+							variant="danger"
+							onClick={() => deleteService(item.id)}
+						>
+							Delete
+						</Button>
+					</Col>
+				</Row>
+			)}
+		</Container>
+	);
+};
+
+export default RepairServices;
