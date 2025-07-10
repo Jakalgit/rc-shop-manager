@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-bootstrap";
 
 interface IProps {
-	preview: {imageId?: number, filename?: string};
+	preview: {imageId?: number, filename: string};
 	files: File[]
 }
 

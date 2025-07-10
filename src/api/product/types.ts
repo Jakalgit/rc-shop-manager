@@ -31,6 +31,7 @@ export type ProductResponse = {
 	article: string;
 	count: number;
 	price: number;
+	wholesalePrice: number;
 	oldPrice?: number;
 	promotionPercentage?: number;
 	weight?: number;

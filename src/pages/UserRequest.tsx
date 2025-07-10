@@ -63,47 +63,51 @@ const UserRequestComponent = () => {
 
 	return (
 		<Container fluid>
-			<Row className="mt-4">
-				{items.map((item, index) =>
-					<Col className="mt-3" key={index} lg={12}>
-						<Card className="h-100">
-							<Card.Body>
-								<Row className="mb-3">
-									<Col lg={4}>
-										<Card.Title>
-											Name: {item.name}
-										</Card.Title>
+			{items.length > 0 && (
+				<>
+					<Row className="mt-4">
+						{items.map((item, index) =>
+							<Col className="mt-3" key={index} lg={12}>
+								<Card className="h-100">
+									<Card.Body>
+										<Row className="mb-3">
+											<Col lg={4}>
+												<Card.Title>
+													Name: {item.name}
+												</Card.Title>
+												<Card.Text>
+													Phone: {item.phone}
+												</Card.Text>
+											</Col>
+											<Col lg={8}>
+												<Card.Text>
+													{item.text}
+												</Card.Text>
+											</Col>
+										</Row>
 										<Card.Text>
-											Phone: {item.phone}
+											Status: {item.checked ? "Read" : <strong>Unread</strong>}
 										</Card.Text>
-									</Col>
-									<Col lg={8}>
-										<Card.Text>
-											{item.text}
-										</Card.Text>
-									</Col>
-								</Row>
-								<Card.Text>
-									Status: {item.checked ? "Read" : <strong>Unread</strong>}
-								</Card.Text>
-								<Button
-									variant="primary"
-									onClick={() => markAsRead(item.id)}
-									disabled={loadingMarkAsRead}
-								>
-									Mark as read
-								</Button>
-							</Card.Body>
-						</Card>
-					</Col>
-				)}
-			</Row>
-			<PaginationComponent
-				currentPage={page}
-				totalPages={totalPages}
-				onPageChange={setPage}
-				siblingCount={5}
-			/>
+										<Button
+											variant="primary"
+											onClick={() => markAsRead(item.id)}
+											disabled={loadingMarkAsRead}
+										>
+											Mark as read
+										</Button>
+									</Card.Body>
+								</Card>
+							</Col>
+						)}
+					</Row>
+					<PaginationComponent
+						currentPage={page}
+						totalPages={totalPages}
+						onPageChange={setPage}
+						siblingCount={5}
+					/>
+				</>
+			)}
 		</Container>
 	);
 };

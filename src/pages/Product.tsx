@@ -31,6 +31,7 @@ const Product = () => {
 			{value: props.height, name: "Height"},
 			{value: props.weight, name: "Weight"},
 			{value: props.length, name: "length"},
+			{value: props.wholesalePrice, name: "Wholesale price"},
 		];
 
 		try {
@@ -51,6 +52,7 @@ const Product = () => {
 			formData.append("visibility", String(props.visibility));
 			formData.append("count", String(props.count));
 			formData.append("price", String(props.price));
+			formData.append("wholesalePrice", String(props.wholesalePrice));
 			formData.append("article", props.article);
 
 			if (props.oldPrice) {
@@ -105,6 +107,7 @@ const Product = () => {
 			console.log(e);
 		}
 		setLoadingSaveButton(false);
+		window.location.reload();
 	}
 
 	async function getData(props: GetDataProps) {
@@ -122,11 +125,12 @@ const Product = () => {
 
 				props.setName(item.name);
 				props.setPrice(item.price.toString());
+				props.setWholesalePrice(item.wholesalePrice.toString());
 				props.setArticle(item.article);
 				props.setCount(item.count);
 
 				props.setOldPrice((item.oldPrice || "").toString());
-				props.setPromotionPercentage((item.oldPrice || "").toString());
+				props.setPromotionPercentage((item.promotionPercentage || "").toString());
 
 				props.setWeight((item.weight || "").toString());
 				props.setLength((item.length || "").toString());

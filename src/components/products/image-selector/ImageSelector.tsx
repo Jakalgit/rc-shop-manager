@@ -3,8 +3,8 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import ImageItem from "./ImageItem.tsx";
 
 interface IProps {
-	previews: {imageId?: number, filename?: string}[];
-	setPreviews: React.Dispatch<React.SetStateAction<{imageId?: number, filename?: string}[]>>
+	previews: {imageId?: number, filename: string}[];
+	setPreviews: React.Dispatch<React.SetStateAction<{imageId?: number, filename: string}[]>>
 	files: File[];
 	setFiles: React.Dispatch<React.SetStateAction<File[]>>
 }
@@ -39,6 +39,11 @@ const ImageSelector: React.FC<IProps> = ({ previews, setPreviews, files, setFile
 		if (index === previews.length - 1) return;
 		setPreviews(prev => swapItems(prev, index, 1));
 	};
+
+	const removeItem = (filename: string) => {
+		setPreviews(prevState => prevState.filter(el => el.filename !== filename));
+		setFiles(prevState => prevState.filter(el => el.name !== filename));
+	}
 
 	return (
 		<div>
@@ -92,6 +97,13 @@ const ImageSelector: React.FC<IProps> = ({ previews, setPreviews, files, setFile
 									→
 								</Button>
 							</ButtonGroup>
+							<Button
+								variant="danger"
+								size="sm"
+								onClick={() => removeItem(preview.filename)}
+							>
+								Delete
+							</Button>
 						</div>
 					))}
 				</div>

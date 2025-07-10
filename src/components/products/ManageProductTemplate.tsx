@@ -14,6 +14,7 @@ export interface ISaveProductArguments {
 	visibility: boolean,
 	count: number,
 	price: string,
+	wholesalePrice: string,
 	article: string,
 	oldPrice: string,
 	promotionPercentage: string,
@@ -22,7 +23,7 @@ export interface ISaveProductArguments {
 	length: string,
 	weight: string,
 	details: {id: number, text: string, detailType: DetailEnum}[],
-	previews: {imageId?: number, filename?: string}[],
+	previews: {imageId?: number, filename: string}[],
 	files: File[],
 	selectedTags: TagResponse[],
 }
@@ -32,6 +33,7 @@ export type GetDataProps = {
 	setFinderTags: (value: React.SetStateAction<TagResponse[]>) => void;
 	setName: (value: React.SetStateAction<string>) => void;
 	setPrice: (value: React.SetStateAction<string>) => void;
+	setWholesalePrice: (value: React.SetStateAction<string>) => void;
 	setArticle: (value: React.SetStateAction<string>) => void;
 	setCount: (value: React.SetStateAction<number>) => void;
 	setOldPrice: (value: React.SetStateAction<string>) => void;
@@ -42,7 +44,7 @@ export type GetDataProps = {
 	setWeight: (value: React.SetStateAction<string>) => void;
 	setDetails: (value: React.SetStateAction<{id: number; text: string; detailType: DetailEnum }[]>) => void;
 	setSelectedTags: (value: React.SetStateAction<TagResponse[]>) => void;
-	setPreviews: (value: React.SetStateAction<{imageId?: number; filename?: string}[]>) => void;
+	setPreviews: (value: React.SetStateAction<{imageId?: number; filename: string}[]>) => void;
 }
 
 interface IProps {
@@ -56,7 +58,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 
 	const [loading, setLoading] = useState(false);
 
-	const [previews, setPreviews] = useState<{imageId?: number, filename?: string}[]>([]);
+	const [previews, setPreviews] = useState<{imageId?: number, filename: string}[]>([]);
 	const [files, setFiles] = useState<File[]>([]);
 
 	const [allTags, setAllTags] = useState<TagResponse[]>([]);
@@ -66,6 +68,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 
 	const [name, setName] = useState<string>('');
 	const [price, setPrice] = useState<string>('');
+	const [wholesalePrice, setWholesalePrice] = useState<string>('');
 	const [article, setArticle] = useState<string>('');
 
 	const [availability, setAvailability] = useState<boolean>(true);
@@ -118,14 +121,14 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	const save = async () => {
 		saveProductInDatabase({
 			id, name, availability, visibility, count, price, article, oldPrice, promotionPercentage,
-			details, previews, files, selectedTags, width, height, length, weight
+			details, previews, files, selectedTags, width, height, length, weight, wholesalePrice
 		});
 	}
 
 	const fetchData = async () => {
 		getData({
 			setAllTags, setFinderTags, setName, setPrice, setArticle, setCount, setOldPrice, setPromotionPercentage,
-			setWidth, setHeight, setLength, setWeight, setDetails, setPreviews, setSelectedTags
+			setWidth, setHeight, setLength, setWeight, setDetails, setPreviews, setSelectedTags, setWholesalePrice
 		}).then(() => setLoading(false));
 	}
 
@@ -181,8 +184,8 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 				</Button>
 			</Row>
 			<Row className="mb-4">
-				<Form.Group as={Col} lg="4">
-					<Form.Label htmlFor="name">Name of new product*</Form.Label>
+				<Form.Group as={Col} lg="6">
+					<Form.Label htmlFor="name">Name of product*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="name"
@@ -193,8 +196,8 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 						/>
 					</InputGroup>
 				</Form.Group>
-				<Form.Group as={Col} lg="4">
-					<Form.Label htmlFor="article">Article of new product*</Form.Label>
+				<Form.Group as={Col} lg="6">
+					<Form.Label htmlFor="article">Article of product*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="article"
@@ -205,8 +208,10 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 						/>
 					</InputGroup>
 				</Form.Group>
-				<Form.Group as={Col} lg="4">
-					<Form.Label htmlFor="price">Price of new product (RUB)*</Form.Label>
+			</Row>
+			<Row className="mb-4">
+				<Form.Group as={Col} lg="6">
+					<Form.Label htmlFor="price">Price of product (RUB)*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="price"
@@ -215,6 +220,19 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 							aria-label="Product Price"
 							value={price}
 							onChange={(e) => setPrice(e.target.value)}
+						/>
+					</InputGroup>
+				</Form.Group>
+				<Form.Group as={Col} lg="6">
+					<Form.Label htmlFor="wholesalePrice">Wholesale price (RUB)*</Form.Label>
+					<InputGroup>
+						<Form.Control
+							id="wholesalePrice"
+							type="number"
+							placeholder="Wholesale price*"
+							aria-label="Product wholesale price"
+							value={wholesalePrice}
+							onChange={(e) => setWholesalePrice(e.target.value)}
 						/>
 					</InputGroup>
 				</Form.Group>

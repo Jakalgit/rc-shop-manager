@@ -28,6 +28,7 @@ const AddNewProduct = () => {
 			{value: props.height, name: "Height"},
 			{value: props.weight, name: "Weight"},
 			{value: props.length, name: "length"},
+			{value: props.wholesalePrice, name: "Wholesale price"},
 		];
 
 		try {
@@ -48,6 +49,7 @@ const AddNewProduct = () => {
 			formData.append("visibility", String(props.visibility));
 			formData.append("count", String(props.count));
 			formData.append("price", String(props.price));
+			formData.append("wholesalePrice", String(props.wholesalePrice));
 			formData.append("article", props.article);
 
 			if (props.oldPrice) {
