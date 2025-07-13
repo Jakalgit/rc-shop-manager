@@ -48,7 +48,7 @@ const ImageSelector: React.FC<IProps> = ({ previews, setPreviews, files, setFile
 	return (
 		<div>
 			<Button variant="primary" onClick={handleAddClick} className="mb-3">
-				Select new image
+				Добавить новую картинку
 			</Button>
 			<input
 				type="file"
@@ -102,7 +102,7 @@ const ImageSelector: React.FC<IProps> = ({ previews, setPreviews, files, setFile
 								size="sm"
 								onClick={() => removeItem(preview.filename)}
 							>
-								Delete
+								Удалить
 							</Button>
 						</div>
 					))}

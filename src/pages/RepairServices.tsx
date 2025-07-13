@@ -51,7 +51,7 @@ const RepairServices = () => {
 
 			await updateServices({items: serviceItems.map(({id, ...rest}) => rest), act});
 
-			alert("Successfully updated services");
+			alert("Услуги ремонта успешно обновлены");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);
@@ -78,7 +78,7 @@ const RepairServices = () => {
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -93,7 +93,7 @@ const RepairServices = () => {
 						variant="primary"
 						onClick={addService}
 					>
-						Add new
+						Добавить
 					</Button>
 				</Col>
 				<Col lg={6}>
@@ -105,10 +105,10 @@ const RepairServices = () => {
 					>
 						{buttonLoading ? (
 							<Spinner animation="border" role="status">
-								<span className="visually-hidden">Loading...</span>
+								<span className="visually-hidden">Загрузка...</span>
 							</Spinner>
 						) : (
-							<>Save services</>
+							<>Сохранить услуги</>
 						)}
 					</Button>
 				</Col>
@@ -116,24 +116,24 @@ const RepairServices = () => {
 			{serviceItems.map(item =>
 				<Row className="mt-4">
 					<Form.Group className="mb-3" as={Col} lg="6">
-						<Form.Label htmlFor="service">Service (id: {item.id})</Form.Label>
+						<Form.Label htmlFor="service">Услуга (id: {item.id})</Form.Label>
 						<InputGroup>
 							<Form.Control
 								id="service"
-								placeholder="Input service..."
-								aria-label="Service"
+								placeholder="Введите название услуги..."
+								aria-label="Услуга"
 								value={item.service}
 								onChange={(e) => changeService(item.id, e.target.value)}
 							/>
 						</InputGroup>
 					</Form.Group>
 					<Form.Group className="mb-3" as={Col} lg="6">
-						<Form.Label htmlFor="price">Price</Form.Label>
+						<Form.Label htmlFor="price">Цена</Form.Label>
 						<InputGroup>
 							<Form.Control
 								id="price"
-								placeholder="Input price..."
-								aria-label="Price"
+								placeholder="Введите цену услуги..."
+								aria-label="Цена"
 								value={item.price}
 								onChange={(e) => changePrice(item.id, e.target.value)}
 							/>
@@ -146,7 +146,7 @@ const RepairServices = () => {
 							variant="danger"
 							onClick={() => deleteService(item.id)}
 						>
-							Delete
+							Удалить
 						</Button>
 					</Col>
 				</Row>

@@ -42,7 +42,7 @@ const HomeCategories = () => {
 				setSelectedFile(undefined);
 				setCurrentGroupId(undefined);
 
-				alert("Successfully created!");
+				alert("Успешно создано.");
 			} catch (e: any) {
 				alert(e?.response?.data?.message);
 				console.log(e);
@@ -57,7 +57,7 @@ const HomeCategories = () => {
 			await deleteHomeCategory({id, act});
 			await getData();
 
-			alert("Successfully deleted!");
+			alert("Успешно удалено.");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);
@@ -115,7 +115,7 @@ const HomeCategories = () => {
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -125,7 +125,7 @@ const HomeCategories = () => {
 			<Row className="mt-4">
 				<Accordion>
 					<Accordion.Item eventKey="0">
-						<Accordion.Header>Create new home category</Accordion.Header>
+						<Accordion.Header>Создание категории стартовой страницы</Accordion.Header>
 						<Accordion.Body>
 							<Row className="mt-3">
 								<Col lg={2}>
@@ -133,7 +133,7 @@ const HomeCategories = () => {
 										onClick={createNewHomeCategory}
 										variant="primary"
 									>
-										Add home category
+										Добавить категорию
 									</Button>
 								</Col>
 							</Row>
@@ -144,7 +144,7 @@ const HomeCategories = () => {
 										onClick={handleAddClick}
 										className="mb-2"
 									>
-										Select new image
+										Выбрать изображение
 									</Button>
 									<input
 										type="file"
@@ -171,12 +171,12 @@ const HomeCategories = () => {
 							</Row>
 							<Row className="mt-2">
 								<Form.Group as={Col} lg="10">
-									<Form.Label htmlFor="finder">Finder</Form.Label>
+									<Form.Label htmlFor="finder">Поиск по группам</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="finder"
-											placeholder="Group name"
-											aria-label="Group name"
+											placeholder="Введите название группы"
+											aria-label="Название группы"
 											value={finderGroups}
 											onChange={(e) => setFinderGroups(e.target.value)}
 										/>
@@ -185,7 +185,7 @@ const HomeCategories = () => {
 							</Row>
 							<Row className="mt-3">
 								<Col lg={12}>
-									<Form.Label>List of groups</Form.Label>
+									<Form.Label>Список доступных групп</Form.Label>
 									<div style={{ overflow: 'auto', height: '150px' }}>
 										<div className="d-flex flex-wrap gap-2">
 											{filteredGroups.map((group, index) => (
@@ -224,7 +224,7 @@ const HomeCategories = () => {
 									onClick={() => deleteCurrentHomeCategory(item.id)}
 									variant="primary"
 								>
-									Delete group
+									Удалить
 								</Button>
 							</Card.Body>
 						</Card>

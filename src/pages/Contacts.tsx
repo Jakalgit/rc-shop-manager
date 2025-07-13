@@ -24,7 +24,7 @@ const Contacts = () => {
 
 			await updateContacts({phone, address, email, act});
 
-			alert("Successfully updated contacts");
+			alert("Контакты успешно обновлены.");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);
@@ -55,7 +55,7 @@ const Contacts = () => {
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -64,24 +64,24 @@ const Contacts = () => {
 		<Container fluid>
 			<Row>
 				<Form.Group className="mb-4" as={Col} lg="12">
-					<Form.Label htmlFor="address">Address</Form.Label>
+					<Form.Label htmlFor="address">Адрес</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="address"
-							placeholder="Input address..."
-							aria-label="Address"
+							placeholder="Введите адрес..."
+							aria-label="Адрес"
 							value={address}
 							onChange={(e) => setAddress(e.target.value)}
 						/>
 					</InputGroup>
 				</Form.Group>
 				<Form.Group className="mb-4" as={Col} lg="12">
-					<Form.Label htmlFor="phone">Phone</Form.Label>
+					<Form.Label htmlFor="phone">Номер телефона</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="phone"
-							placeholder="Input phone (+7XXXXXXXXXX)..."
-							aria-label="Phobe"
+							placeholder="Номер телефона (+7XXXXXXXXXX)..."
+							aria-label="Номер телефона"
 							value={phone}
 							onChange={(e) => setPhone(e.target.value)}
 						/>
@@ -92,7 +92,7 @@ const Contacts = () => {
 					<InputGroup>
 						<Form.Control
 							id="email"
-							placeholder="Input email (example@mail.ru)..."
+							placeholder="Введите email (example@mail.ru)..."
 							aria-label="Email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -110,7 +110,7 @@ const Contacts = () => {
 								<span className="visually-hidden">Loading...</span>
 							</Spinner>
 						) : (
-							<>Save contacts</>
+							<>Сохранить контакты</>
 						)}
 					</Button>
 				</Col>

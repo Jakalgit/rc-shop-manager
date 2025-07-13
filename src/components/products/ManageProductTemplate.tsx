@@ -159,7 +159,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -176,33 +176,33 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 				>
 					{loadingSaveButton ? (
 						<Spinner animation="border" role="status">
-							<span className="visually-hidden">Loading...</span>
+							<span className="visually-hidden">Загрузка...</span>
 						</Spinner>
 					) : (
-						<>Save new product in database</>
+						<>Сохранить товар в базе данных</>
 					)}
 				</Button>
 			</Row>
 			<Row className="mb-4">
 				<Form.Group as={Col} lg="6">
-					<Form.Label htmlFor="name">Name of product*</Form.Label>
+					<Form.Label htmlFor="name">Название товара*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="name"
-							placeholder="Name*"
-							aria-label="Product Name"
+							placeholder="Название*"
+							aria-label="Название товара"
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</InputGroup>
 				</Form.Group>
 				<Form.Group as={Col} lg="6">
-					<Form.Label htmlFor="article">Article of product*</Form.Label>
+					<Form.Label htmlFor="article">Артикул товара*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="article"
-							placeholder="Article*"
-							aria-label="Article"
+							placeholder="Артикул*"
+							aria-label="Артикул"
 							value={article}
 							onChange={(e) => setArticle(e.target.value)}
 						/>
@@ -211,26 +211,26 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			</Row>
 			<Row className="mb-4">
 				<Form.Group as={Col} lg="6">
-					<Form.Label htmlFor="price">Price of product (RUB)*</Form.Label>
+					<Form.Label htmlFor="price">Цена товара (RUB)*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="price"
 							type="number"
-							placeholder="Price*"
-							aria-label="Product Price"
+							placeholder="Цена*"
+							aria-label="Цена товара"
 							value={price}
 							onChange={(e) => setPrice(e.target.value)}
 						/>
 					</InputGroup>
 				</Form.Group>
 				<Form.Group as={Col} lg="6">
-					<Form.Label htmlFor="wholesalePrice">Wholesale price (RUB)*</Form.Label>
+					<Form.Label htmlFor="wholesalePrice">Оптовая цена товара (RUB)*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="wholesalePrice"
 							type="number"
-							placeholder="Wholesale price*"
-							aria-label="Product wholesale price"
+							placeholder="Оптовая цена*"
+							aria-label="Оптовая цена товара"
 							value={wholesalePrice}
 							onChange={(e) => setWholesalePrice(e.target.value)}
 						/>
@@ -240,14 +240,14 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			<Row className="mb-4">
 				<Accordion>
 					<Accordion.Item eventKey="0">
-						<Accordion.Header>Tags ({selectedTags.length} items selected)</Accordion.Header>
+						<Accordion.Header>Теги ({selectedTags.length} элементов выбрано)</Accordion.Header>
 						<Accordion.Body>
 							<Row>
 								<InputGroup className="mb-3">
 									<Form.Control
 										type="text"
-										placeholder="Input tag's name..."
-										aria-label="Finder text"
+										placeholder="Название тега..."
+										aria-label="Поиск по тегам"
 										value={finderTagsText}
 										onChange={(e) => setFinderTagsText(e.target.value)}
 									/>
@@ -255,7 +255,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 							</Row>
 							<Row>
 								<Col lg={6}>
-									<Form.Label>List of tags</Form.Label>
+									<Form.Label>Список доступных тегов</Form.Label>
 									<div style={{ overflow: 'auto', height: '200px' }}>
 										<div className="d-flex flex-wrap gap-2">
 											{finderTags.map((tag, index) => (
@@ -272,7 +272,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 									</div>
 								</Col>
 								<Col lg={6}>
-									<Form.Label>List of selected tags</Form.Label>
+									<Form.Label>Список выбранных</Form.Label>
 									<div style={{ overflow: 'auto', height: '200px' }}>
 										<div className="d-flex flex-wrap gap-2">
 											{selectedTags.map((tag, index) => (
@@ -295,69 +295,69 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			</Row>
 			<Row className="mb-4">
 				<Form.Group as={Col} lg="4">
-					<Form.Label htmlFor="availability-status">Availability*</Form.Label>
+					<Form.Label htmlFor="availability-status">Доступность*</Form.Label>
 					<Form.Select
-						aria-label="Availability staus"
+						aria-label="Статус доступности"
 						name="availability"
 						id="availability-status"
 						onChange={(e) => setAvailability(e.target.value === "1")}
 						value={availability ? "1" : "2"}
 					>
-						<option value="1">In stock</option>
-						<option value="2">Not available</option>
+						<option value="1">В наличии</option>
+						<option value="2">Нет в наличии</option>
 					</Form.Select>
 				</Form.Group>
 				<Form.Group as={Col} lg="4">
-					<Form.Label htmlFor="count">Count of new product*</Form.Label>
+					<Form.Label htmlFor="count">Кол-во товаров*</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="count"
-							placeholder="Count*"
-							aria-label="Product Count"
+							placeholder="Количество*"
+							aria-label="Количство товаров"
 							value={count}
 							onChange={(e) => setCount(Number(e.target.value))}
 						/>
 					</InputGroup>
 				</Form.Group>
 				<Form.Group as={Col} lg="4">
-					<Form.Label htmlFor="visibility-status">Visibility*</Form.Label>
+					<Form.Label htmlFor="visibility-status">Видимость пользователю*</Form.Label>
 					<Form.Select
-						aria-label="Visibility staus"
+						aria-label="Статус видимости"
 						name="visibility"
 						id="visibility-status"
 						onChange={(e) => setVisibility(e.target.value === "1")}
 						value={visibility ? "1" : "2"}
 					>
-						<option value="1">Visible</option>
-						<option value="2">Invisible</option>
+						<option value="1">Видимый</option>
+						<option value="2">Невидимый</option>
 					</Form.Select>
 				</Form.Group>
 			</Row>
 			<Row className="mb-4">
 				<Accordion>
 					<Accordion.Item eventKey="0">
-						<Accordion.Header>Discount for product ({isNumeric(oldPrice) ? 'Active' : 'Inactive'})</Accordion.Header>
+						<Accordion.Header>Скидка на товар ({isNumeric(oldPrice) ? 'Активна' : 'Неактивна'})</Accordion.Header>
 						<Accordion.Body>
 							<Row>
 								<Form.Group as={Col} lg="6">
-									<Form.Label htmlFor="oldPrice">Old price for product</Form.Label>
+									<Form.Label htmlFor="oldPrice">Цена до скидки</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="oldPrice"
-											placeholder="Old price"
-											aria-label="Old price for product"
+											placeholder="Цена до скидки"
+											aria-label="Цена продукта до скидки"
 											value={oldPrice}
 											onChange={(e) => setOldPrice(e.target.value)}
 										/>
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="6">
-									<Form.Label htmlFor="percentage">Promotion percentage for product</Form.Label>
+									<Form.Label htmlFor="percentage">Процент скидки</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="percentage"
-											placeholder="Promotion percentage"
-											aria-label="Promotion percentage"
+											placeholder="Процент скидки"
+											aria-label="Процент скидки"
 											value={promotionPercentage}
 											onChange={(e) => setPromotionPercentage(e.target.value)}
 										/>
@@ -367,52 +367,52 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="1">
-						<Accordion.Header>Physical characteristics (kilograms, meters)</Accordion.Header>
+						<Accordion.Header>Физические характеристики (килограммы, метры)</Accordion.Header>
 						<Accordion.Body>
 							<Row>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="width">Width</Form.Label>
+									<Form.Label htmlFor="width">Ширина</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="width"
-											placeholder="Width, m."
-											aria-label="Width for product"
+											placeholder="Ширина, м."
+											aria-label="Ширина товара"
 											value={width}
 											onChange={(e) => setWidth(e.target.value)}
 										/>
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="height">Height</Form.Label>
+									<Form.Label htmlFor="height">Высота</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="height"
-											placeholder="Height, m."
-											aria-label="Height for product"
+											placeholder="Высота, м."
+											aria-label="Высота товара"
 											value={height}
 											onChange={(e) => setHeight(e.target.value)}
 										/>
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="lenght">Length</Form.Label>
+									<Form.Label htmlFor="lenght">Длина</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="lenght"
-											placeholder="Lenght, m."
-											aria-label="Lenght for product"
+											placeholder="Длина, м."
+											aria-label="Длина товара"
 											value={length}
 											onChange={(e) => setLength(e.target.value)}
 										/>
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="weight">Weight</Form.Label>
+									<Form.Label htmlFor="weight">Вес</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="weight"
-											placeholder="Weight, kg."
-											aria-label="Wenght for product"
+											placeholder="Вес, кг."
+											aria-label="Вес товара"
 											value={weight}
 											onChange={(e) => setWeight(e.target.value)}
 										/>
@@ -427,7 +427,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 				<Accordion>
 					<Accordion.Item eventKey="0">
 						<Accordion.Header>
-							Description ({details.filter(el => el.detailType === DetailEnum.DESCRIPTION).length} items)
+							Описания ({details.filter(el => el.detailType === DetailEnum.DESCRIPTION).length} элементов)
 						</Accordion.Header>
 						<Accordion.Body>
 							<Button
@@ -436,16 +436,17 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 								type="submit"
 								className="mb-4"
 							>
-								Add description
+								Добавить описание
 							</Button>
 							{details.filter(el => el.detailType === DetailEnum.DESCRIPTION).map(el =>
 								<Form.Group key={el.id} className="mb-3" controlId={`description.ControlTextarea${el.id}`}>
-									<Form.Label>Description (id: {el.id})</Form.Label>
+									<Form.Label>Описание (id: {el.id})</Form.Label>
 									<Form.Control
 										as="textarea"
 										rows={3}
 										value={el.text}
 										onChange={(e) => changeDetailText(el.id, e.target.value)}
+										placeholder="Введите текст*"
 									/>
 									<Button
 										variant="danger"
@@ -453,7 +454,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 										className="mt-2"
 										onClick={() => deleteDetail(el.id)}
 									>
-										Delete
+										Удалить
 									</Button>
 								</Form.Group>
 							)}
@@ -461,7 +462,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 					</Accordion.Item>
 					<Accordion.Item eventKey="1">
 						<Accordion.Header>
-							Specification ({details.filter(el => el.detailType === DetailEnum.SPECIFICATION).length} items)
+							Спецификации ({details.filter(el => el.detailType === DetailEnum.SPECIFICATION).length} элементов)
 						</Accordion.Header>
 						<Accordion.Body>
 							<Button
@@ -470,16 +471,17 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 								type="submit"
 								className="mb-4"
 							>
-								Add specification
+								Добавить спецификацию
 							</Button>
 							{details.filter(el => el.detailType === DetailEnum.SPECIFICATION).map(el =>
 								<Form.Group key={el.id} className="mb-3" controlId={`specification.ControlTextarea${el.id}`}>
-									<Form.Label>Specification (id: {el.id})</Form.Label>
+									<Form.Label>Спецификация (id: {el.id})</Form.Label>
 									<Form.Control
 										as="textarea"
 										rows={3}
 										value={el.text}
 										onChange={(e) => changeDetailText(el.id, e.target.value)}
+										placeholder="Введите текст*"
 									/>
 									<Button
 										variant="danger"
@@ -487,7 +489,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 										className="mt-2"
 										onClick={() => deleteDetail(el.id)}
 									>
-										Delete
+										Удалить
 									</Button>
 								</Form.Group>
 							)}
@@ -495,7 +497,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 					</Accordion.Item>
 					<Accordion.Item eventKey="2">
 						<Accordion.Header>
-							Equipment ({details.filter(el => el.detailType === DetailEnum.EQUIPMENT).length} items)
+							Комплектация ({details.filter(el => el.detailType === DetailEnum.EQUIPMENT).length} items)
 						</Accordion.Header>
 						<Accordion.Body>
 							<Button
@@ -504,16 +506,17 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 								type="submit"
 								className="mb-4"
 							>
-								Add equipment
+								Добавить в комплект
 							</Button>
 							{details.filter(el => el.detailType === DetailEnum.EQUIPMENT).map(el =>
 								<Form.Group key={el.id} className="mb-3" controlId={`equipment.ControlTextarea${el.id}`}>
-									<Form.Label>Equipment (id: {el.id})</Form.Label>
+									<Form.Label>Позиция комплекта (id: {el.id})</Form.Label>
 									<Form.Control
 										as="textarea"
 										rows={3}
 										value={el.text}
 										onChange={(e) => changeDetailText(el.id, e.target.value)}
+										placeholder="Введите текст*"
 									/>
 									<Button
 										variant="danger"
@@ -521,7 +524,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 										className="mt-2"
 										onClick={() => deleteDetail(el.id)}
 									>
-										Delete
+										Удалить
 									</Button>
 								</Form.Group>
 							)}

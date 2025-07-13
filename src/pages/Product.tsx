@@ -17,7 +17,7 @@ const Product = () => {
 
 	const alertOnNumber = (value: string, valueName: string) => {
 		if (value.length !== 0 && !isNumeric(value)) {
-			alert(`${valueName} must be a number`);
+			alert(`${valueName} должна быть числом`);
 			return false;
 		}
 		return true;
@@ -25,13 +25,13 @@ const Product = () => {
 
 	const saveProductInDatabase = async (props: ISaveProductArguments) => {
 		const fieldToCheckNumber = [
-			{value: props.price, name: "Price"},
-			{value: props.oldPrice, name: "Old Price"},
-			{value: props.width, name: "Width"},
-			{value: props.height, name: "Height"},
-			{value: props.weight, name: "Weight"},
-			{value: props.length, name: "length"},
-			{value: props.wholesalePrice, name: "Wholesale price"},
+			{value: props.price, name: "Цена"},
+			{value: props.oldPrice, name: "Цена до скидки"},
+			{value: props.width, name: "Ширина"},
+			{value: props.height, name: "Высота"},
+			{value: props.weight, name: "Вес"},
+			{value: props.length, name: "Длина"},
+			{value: props.wholesalePrice, name: "Оптовая цена"},
 		];
 
 		try {
@@ -101,7 +101,7 @@ const Product = () => {
 
 			await updateProduct(formData, Number(props.id), act);
 
-			alert("Product saved successfully.");
+			alert("Товар успешно сохранён.");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);

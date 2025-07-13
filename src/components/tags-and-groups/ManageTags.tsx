@@ -36,8 +36,9 @@ const ManageTags = () => {
 			const act: string = cookies.get("act") || "";
 
 			await createNewTag(newTagName, act);
+			await getData();
 
-			alert("Successfully created!");
+			alert("Успешно создано.");
 			setNewTagName("");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
@@ -56,7 +57,7 @@ const ManageTags = () => {
 				await updateTag({name: updateTagName, id: currentTagId, act, groupId: currentGroupId});
 				await getData();
 
-				alert("Successfully updated!");
+				alert("Успешно обновлено.");
 			} catch (e: any) {
 				alert(e?.response?.data?.message);
 				console.log(e);
@@ -77,7 +78,7 @@ const ManageTags = () => {
 
 				setCurrentTagId(undefined);
 
-				alert("Successfully deleted!");
+				alert("Успешно удалено.");
 			} catch (e: any) {
 				alert(e?.response?.data?.message);
 				console.log(e);
@@ -163,7 +164,7 @@ const ManageTags = () => {
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -171,16 +172,16 @@ const ManageTags = () => {
 	return (
 		<Accordion>
 			<Accordion.Item eventKey="0">
-				<Accordion.Header>Create new tag</Accordion.Header>
+				<Accordion.Header>Создать новый тег</Accordion.Header>
 				<Accordion.Body>
 					<Row>
 						<Form.Group as={Col} lg="10">
-							<Form.Label htmlFor="name">Name of new tag*</Form.Label>
+							<Form.Label htmlFor="name">Название нового тега*</Form.Label>
 							<InputGroup>
 								<Form.Control
 									id="name"
-									placeholder="Tag name"
-									aria-label="Tag name"
+									placeholder="Название тега"
+									aria-label="Название тега"
 									value={newTagName}
 									onChange={(e) => setNewTagName(e.target.value)}
 								/>
@@ -197,10 +198,10 @@ const ManageTags = () => {
 							>
 								{newTagButtonLoading ? (
 									<Spinner animation="border" role="status">
-										<span className="visually-hidden">Loading...</span>
+										<span className="visually-hidden">Загрузка...</span>
 									</Spinner>
 								) : (
-									<>Add new</>
+									<>Добавить</>
 								)}
 							</Button>
 						</Col>
@@ -208,16 +209,16 @@ const ManageTags = () => {
 				</Accordion.Body>
 			</Accordion.Item>
 			<Accordion.Item eventKey="1">
-				<Accordion.Header>Manage existing tags</Accordion.Header>
+				<Accordion.Header>Управление существующими тегами</Accordion.Header>
 				<Accordion.Body>
 					<Row>
 						<Form.Group as={Col} lg="10">
-							<Form.Label htmlFor="finder">Finder</Form.Label>
+							<Form.Label htmlFor="finder">Поиск по тегам</Form.Label>
 							<InputGroup>
 								<Form.Control
 									id="finder"
-									placeholder="Tag name"
-									aria-label="Tag name"
+									placeholder="Название тега"
+									aria-label="Название тега"
 									value={finderTagText}
 									onChange={(e) => setFinderTagText(e.target.value)}
 								/>
@@ -226,7 +227,7 @@ const ManageTags = () => {
 					</Row>
 					<Row className="mt-3">
 						<Col lg={12}>
-							<Form.Label>List of tags</Form.Label>
+							<Form.Label>Список тегов</Form.Label>
 							<div style={{ overflow: 'auto', height: '200px' }}>
 								<div className="d-flex flex-wrap gap-2">
 									{filteredTags.map((tag, index) => (
@@ -246,13 +247,13 @@ const ManageTags = () => {
 					{currentTagId && (
 						<>
 							<Row>
-								<Form.Label>Current tag: (id: {currentTagId}; name: {allTags.find(el => el.id === currentTagId)?.name})</Form.Label>
+								<Form.Label>Выбранны тег: (id: {currentTagId}; name: {allTags.find(el => el.id === currentTagId)?.name})</Form.Label>
 								<Form.Group as={Col} lg="4">
 									<InputGroup>
 										<Form.Control
 											id="update_name"
-											placeholder="Tag name"
-											aria-label="Tag name"
+											placeholder="Название тега"
+											aria-label="Название тега"
 											value={updateTagName}
 											onChange={(e) => setUpdateTagName(e.target.value)}
 										/>
@@ -266,10 +267,10 @@ const ManageTags = () => {
 									>
 										{saveTagButtonLoading ? (
 											<Spinner animation="border" role="status">
-												<span className="visually-hidden">Loading...</span>
+												<span className="visually-hidden">Загрузка...</span>
 											</Spinner>
 										) : (
-											<>Update tag</>
+											<>Обновить тег</>
 										)}
 									</Button>
 								</Col>
@@ -281,10 +282,10 @@ const ManageTags = () => {
 									>
 										{deleteTagButtonLoading ? (
 											<Spinner animation="border" role="status">
-												<span className="visually-hidden">Loading...</span>
+												<span className="visually-hidden">Загрузка...</span>
 											</Spinner>
 										) : (
-											<>Delete current tag</>
+											<>Удалить выбранный тег</>
 										)}
 									</Button>
 								</Col>
@@ -293,8 +294,8 @@ const ManageTags = () => {
 								<Form.Group as={Col} lg="10">
 									<InputGroup>
 										<Form.Control
-											placeholder="Group name"
-											aria-label="Group name"
+											placeholder="Название группы"
+											aria-label="Название группы"
 											value={finderGroupText}
 											onChange={(e) => setFinderGroupText(e.target.value)}
 										/>

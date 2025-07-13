@@ -62,12 +62,12 @@ const AllProducts = () => {
 		<Container fluid>
 			<Row>
 				<Form.Group as={Col} lg="12">
-					<Form.Label htmlFor="finder">Find product</Form.Label>
+					<Form.Label htmlFor="finder">Поиск по продуктам</Form.Label>
 					<InputGroup>
 						<Form.Control
 							id="finder"
-							placeholder="Input text..."
-							aria-label="Product finder"
+							placeholder="Введите текст..."
+							aria-label="Поиск по продуктам"
 							value={finderText}
 							onChange={(e) => setFinderText(e.target.value)}
 						/>
@@ -78,7 +78,7 @@ const AllProducts = () => {
 						onClick={findProducts}
 						variant="primary"
 					>
-						Find
+						Найти
 					</Button>
 				</Col>
 			</Row>
@@ -96,9 +96,9 @@ const AllProducts = () => {
 									{item.article}
 								</Card.Title>
 								<Card.Text style={{ fontSize: 14 }}>
-									Name: {item.name}
+									Название: {item.name}
 								</Card.Text>
-								<Button onClick={() => openProductPage(item.id)} variant="primary">Change info</Button>
+								<Button onClick={() => openProductPage(item.id)} variant="primary">Редактировать</Button>
 							</Card.Body>
 						</Card>
 					</Col>

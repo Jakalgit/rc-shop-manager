@@ -25,7 +25,7 @@ const UserRequestComponent = () => {
 			await setCheckedRequest({id, act});
 			await getData();
 
-			alert("Successfully marked.");
+			alert("Успешно отмечено.");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);
@@ -56,7 +56,7 @@ const UserRequestComponent = () => {
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -73,10 +73,10 @@ const UserRequestComponent = () => {
 										<Row className="mb-3">
 											<Col lg={4}>
 												<Card.Title>
-													Name: {item.name}
+													Имя: {item.name}
 												</Card.Title>
 												<Card.Text>
-													Phone: {item.phone}
+													Номер телефона: {item.phone}
 												</Card.Text>
 											</Col>
 											<Col lg={8}>
@@ -86,14 +86,14 @@ const UserRequestComponent = () => {
 											</Col>
 										</Row>
 										<Card.Text>
-											Status: {item.checked ? "Read" : <strong>Unread</strong>}
+											Статус: {item.checked ? "Прочитано" : <strong>Не прочитано</strong>}
 										</Card.Text>
 										<Button
 											variant="primary"
 											onClick={() => markAsRead(item.id)}
 											disabled={loadingMarkAsRead}
 										>
-											Mark as read
+											Пометить как прочитанное
 										</Button>
 									</Card.Body>
 								</Card>

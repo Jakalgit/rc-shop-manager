@@ -32,8 +32,9 @@ const ManageGroups = () => {
 			const act: string = cookies.get("act") || "";
 
 			await createGroup({name: groupName, act});
+			await getData();
 
-			alert("Successfully created!");
+			alert("Успешно добавлено.");
 			setGroupName("");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
@@ -52,7 +53,7 @@ const ManageGroups = () => {
 				await updateGroup({id: currentGroupId, name: updateGroupName, act});
 				await getData();
 
-				alert("Successfully updated!");
+				alert("Успешно обновлено.");
 			} catch (e: any) {
 				alert(e?.response?.data?.message);
 				console.log(e);
@@ -71,7 +72,7 @@ const ManageGroups = () => {
 				await deleteGroup({id: currentGroupId, act});
 				await getData();
 
-				alert("Successfully updated!");
+				alert("Успешно добавлено.");
 			} catch (e: any) {
 				alert(e?.response?.data?.message);
 				console.log(e);
@@ -122,7 +123,7 @@ const ManageGroups = () => {
 	if (loading) {
 		return (
 			<Spinner animation="border" role="status">
-				<span className="visually-hidden">Loading...</span>
+				<span className="visually-hidden">Загрузка...</span>
 			</Spinner>
 		)
 	}
@@ -130,16 +131,16 @@ const ManageGroups = () => {
 	return (
 		<Accordion>
 			<Accordion.Item eventKey="0">
-				<Accordion.Header>Create new groups</Accordion.Header>
+				<Accordion.Header>Создать новую группу</Accordion.Header>
 				<Accordion.Body>
 					<Row>
 						<Form.Group as={Col} lg="10">
-							<Form.Label htmlFor="name">Name of new group*</Form.Label>
+							<Form.Label htmlFor="name">Название новой группы*</Form.Label>
 							<InputGroup>
 								<Form.Control
 									id="name"
-									placeholder="Group name"
-									aria-label="Group name"
+									placeholder="Название группы"
+									aria-label="Название группы"
 									value={groupName}
 									onChange={(e) => setGroupName(e.target.value)}
 								/>
@@ -156,10 +157,10 @@ const ManageGroups = () => {
 							>
 								{createGroupButtonLoading ? (
 									<Spinner animation="border" role="status">
-										<span className="visually-hidden">Loading...</span>
+										<span className="visually-hidden">Загрузка...</span>
 									</Spinner>
 								) : (
-									<>Add new</>
+									<>Добавить</>
 								)}
 							</Button>
 						</Col>
@@ -167,16 +168,16 @@ const ManageGroups = () => {
 				</Accordion.Body>
 			</Accordion.Item>
 			<Accordion.Item eventKey="1">
-				<Accordion.Header>Manage existing groups</Accordion.Header>
+				<Accordion.Header>Управление существующими группами</Accordion.Header>
 				<Accordion.Body>
 					<Row>
 						<Form.Group as={Col} lg="10">
-							<Form.Label htmlFor="finder">Finder</Form.Label>
+							<Form.Label htmlFor="finder">Поиск по группам</Form.Label>
 							<InputGroup>
 								<Form.Control
 									id="finder"
-									placeholder="Group name"
-									aria-label="Group name"
+									placeholder="Название группы"
+									aria-label="Название группы"
 									value={finderGroupText}
 									onChange={(e) => setFinderGroupText(e.target.value)}
 								/>
@@ -185,7 +186,7 @@ const ManageGroups = () => {
 					</Row>
 					<Row className="mt-3">
 						<Col lg={12}>
-							<Form.Label>List of groups</Form.Label>
+							<Form.Label>Список групп</Form.Label>
 							<div style={{ overflow: 'auto', height: '200px' }}>
 								<div className="d-flex flex-wrap gap-2">
 									{filteredGroups.map((group, index) => (
@@ -205,13 +206,13 @@ const ManageGroups = () => {
 					{currentGroupId && (
 						<>
 							<Row>
-								<Form.Label>Current group: (id: {currentGroupId}; name: {allGroups.find(el => el.id === currentGroupId)?.name})</Form.Label>
+								<Form.Label>Выбранная группа: (id: {currentGroupId}; name: {allGroups.find(el => el.id === currentGroupId)?.name})</Form.Label>
 								<Form.Group as={Col} lg="4">
 									<InputGroup>
 										<Form.Control
 											id="update_name"
-											placeholder="Tag name"
-											aria-label="Tag name"
+											placeholder="Название группы"
+											aria-label="Название группы"
 											value={updateGroupName}
 											onChange={(e) => setUpdateGroupName(e.target.value)}
 										/>
@@ -225,10 +226,10 @@ const ManageGroups = () => {
 									>
 										{updateGroupButtonLoading ? (
 											<Spinner animation="border" role="status">
-												<span className="visually-hidden">Loading...</span>
+												<span className="visually-hidden">Загрузка...</span>
 											</Spinner>
 										) : (
-											<>Update group</>
+											<>Обновить группу</>
 										)}
 									</Button>
 								</Col>
@@ -240,10 +241,10 @@ const ManageGroups = () => {
 									>
 										{deleteGroupButtonLoading ? (
 											<Spinner animation="border" role="status">
-												<span className="visually-hidden">Loading...</span>
+												<span className="visually-hidden">Загрузка...</span>
 											</Spinner>
 										) : (
-											<>Delete current group</>
+											<>Обновить выбранную группу</>
 										)}
 									</Button>
 								</Col>

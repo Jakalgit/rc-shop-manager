@@ -18,61 +18,61 @@ const Home = () => {
 
 	const tabItems = [
 		{
-			name: 'Statistics',
+			name: 'Статистика',
 			eventKey: 'statistics',
 			tab: <></>,
 			path: '/statistics',
 		},
 		{
-			name: 'Products',
+			name: 'Товары',
 			eventKey: 'products',
 			tab: <Products />,
 			path: '/products'
 		},
 		{
-			name: 'Tags and groups',
+			name: 'Теги и группы',
 			eventKey: 'tags_and_groups',
 			tab: <TagsAndGroups />,
 			path: '/tags-and-groups'
 		},
 		{
-			name: 'Images',
+			name: 'Изображения',
 			eventKey: 'images',
 			tab: <></>,
 			path: '/images'
 		},
 		{
-			name: 'Contacts',
+			name: 'Контакты',
 			eventKey: 'contacts',
 			tab: <Contacts />,
 			path: '/contacts'
 		},
 		{
-			name: 'Repair services',
+			name: 'Услуги ремонта',
 			eventKey: 'repair_services',
 			tab: <RepairServices />,
 			path: '/repair-services'
 		},
 		{
-			name: 'Slider content',
+			name: 'Контент слайдера',
 			eventKey: 'slider_content',
 			tab: <></>,
 			path: '/slider-content',
 		},
 		{
-			name: 'User\'s requests',
+			name: 'Пользовательские запросы',
 			eventKey: 'user_requests',
 			tab: <UserRequestComponent />,
 			path: '/user-requests'
 		},
 		{
-			name: 'Home categories',
+			name: 'Категории стартовой стр.',
 			eventKey: 'home_categories',
 			tab: <HomeCategories />,
 			path: '/home-categories'
 		},
 		{
-			name: 'Orders',
+			name: 'Заказы',
 			eventKey: 'orders',
 			tab: <></>,
 			path: '/orders'
@@ -83,7 +83,7 @@ const Home = () => {
 		<Container fluid>
 			<Tab.Container defaultActiveKey={tabItems[0].eventKey}>
 				<Row>
-					<Col lg={2}>
+					<Col lg={2} md={3}>
 						<Nav className={`flex-column ${styles.navbar}`} variant="pills">
 							{tabItems.map(item =>
 								<Nav.Item>
@@ -97,6 +97,7 @@ const Home = () => {
 					<Col
 						style={{ maxHeight: '100vh', overflowY: 'auto' }}
 						lg={10}
+						md={9}
 					>
 						{tabItems.find(el => el.eventKey === currentTab)?.tab}
 					</Col>

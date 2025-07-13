@@ -7,12 +7,12 @@ const TagsAndGroups = () => {
 
 	const tabItems = [
 		{
-			title: "Manage tags",
+			title: "Управление тегами",
 			eventKey: "manage_tags",
 			tsx: <ManageTags />,
 		},
 		{
-			title: "Manage groups",
+			title: "Управление группами",
 			eventKey: "manage_groups",
 			tsx: <ManageGroups />
 		}

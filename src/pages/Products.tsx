@@ -7,12 +7,12 @@ const Products = () => {
 
 	const tabItems = [
 		{
-			title: "All Products",
+			title: "Все товары",
 			eventKey: "all_product",
 			tsx: <AllProducts />
 		},
 		{
-			title: "Add New Product",
+			title: "Добавить новый товар",
 			eventKey: "add_new_product",
 			tsx: <AddNewProduct />
 		}
