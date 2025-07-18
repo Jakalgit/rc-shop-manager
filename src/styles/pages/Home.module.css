@@ -1,6 +1,13 @@
 
 .navbar {
-
     background-color: #dbecff;
     height: 100vh;
+}
+
+.selectedNavItem {
+    background-color: #2962FF;
+}
+
+.selectedNavItem a {
+    color: white !important;
 }

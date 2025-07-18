@@ -4,8 +4,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import {isNumeric} from "../../functions/isNumeric.ts";
 import {DetailEnum} from "../../api/product/types.ts";
 import ImageSelector from "./image-selector/ImageSelector.tsx";
-import React, {useEffect, useState} from "react";
+import React, {type ChangeEvent, useEffect, useRef, useState} from "react";
 import type {TagResponse} from "../../api/tag/types.ts";
+import type {JsonProductType} from "../../types/json-product.type.ts";
 
 export interface ISaveProductArguments {
 	id?: number,
@@ -56,6 +57,7 @@ interface IProps {
 
 const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadingSaveButton, id, getData }) => {
 
+	const inputJsonFileRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(false);
 
 	const [previews, setPreviews] = useState<{imageId?: number, filename: string}[]>([]);
@@ -84,6 +86,127 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	const [length, setLength] = useState<string>('');
 
 	const [details, setDetails] = useState<{id: number, text: string, detailType: DetailEnum}[]>([]);
+
+	const handleJsonAddClick = () => {
+		inputJsonFileRef.current?.click();
+	};
+
+	const handleJsonFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) {
+			alert("Выберите .json файл.");
+			return;
+		}
+
+		if (!file.name.endsWith('.json')) {
+			alert("Неверный формат файла.");
+			return;
+		}
+
+		function setDataFromJson<T extends string | number | boolean>(value: T, setValue: React.Dispatch<React.SetStateAction<T>>) {
+			setValue(value);
+		}
+
+		function addDetailFormJson(text: string, detailType: DetailEnum) {
+			setDetails(prevState => [...prevState, {id: -Date.now(), text, detailType}]);
+		}
+
+		function isJsonProductType(obj: any): obj is JsonProductType {
+			if (typeof obj !== 'object' || obj === null) return false;
+
+			const schema: Record<keyof JsonProductType, 'string' | 'number' | 'boolean' | 'string[]'> = {
+				name: 'string',
+				article: 'string',
+				price: 'string',
+				wholesalePrice: 'string',
+				availability: 'boolean',
+				count: 'number',
+				visibility: 'boolean',
+				oldPrice: 'string',
+				promotionPercentage: 'string',
+				width: 'string',
+				length: 'string',
+				height: 'string',
+				weight: 'string',
+				description: 'string[]',
+				specifications: 'string[]',
+				equipment: 'string[]',
+			};
+
+			return Object.entries(schema).every(([key, type]) => {
+				const value = obj[key];
+				if (value === undefined) return true;
+
+				if (type === 'string') return typeof value === 'string';
+				if (type === 'number') return typeof value === 'number';
+				if (type === 'boolean') return typeof value === 'boolean';
+				if (type === 'string[]') return Array.isArray(value) && value.every(v => typeof v === 'string');
+
+				return false;
+			});
+		}
+
+		let parsedData;
+
+		try {
+			const text = await file.text();
+			parsedData = JSON.parse(text) as JsonProductType;
+		} catch {
+			alert("Ошибка парсинга JSON")
+			return;
+		}
+
+		if (!isJsonProductType(parsedData)) {
+			alert("Ошибка формата JSON файла, перепроверьте формат")
+			return;
+		}
+
+		const jsonToSet = [
+			{value: parsedData.name, setValue: setName},
+			{value: parsedData.article, setValue: setArticle},
+			{value: parsedData.price, setValue: setPrice},
+			{value: parsedData.wholesalePrice, setValue: setWholesalePrice},
+			{value: parsedData.availability, setValue: setAvailability},
+			{value: parsedData.count, setValue: setCount},
+			{value: parsedData.visibility, setValue: setVisibility},
+			{value: parsedData.oldPrice, setValue: setOldPrice},
+			{value: parsedData.promotionPercentage, setValue: setPromotionPercentage},
+			{value: parsedData.weight, setValue: setWeight},
+			{value: parsedData.height, setValue: setHeight},
+			{value: parsedData.width, setValue: setWidth},
+			{value: parsedData.weight, setValue: setWeight},
+		];
+
+		jsonToSet.forEach((item) => {
+			if (item.value !== undefined) {
+				if (typeof item.value === "string") {
+					setDataFromJson<string>(item.value, item.setValue as React.Dispatch<React.SetStateAction<string>>);
+				} else if (typeof item.value === "number") {
+					setDataFromJson<number>(item.value, item.setValue as React.Dispatch<React.SetStateAction<number>>);
+				} else {
+					setDataFromJson<boolean>(item.value, item.setValue as React.Dispatch<React.SetStateAction<boolean>>);
+				}
+			}
+		});
+
+		if (parsedData.description) {
+			parsedData.description.forEach((item) => {
+				addDetailFormJson(item, DetailEnum.DESCRIPTION);
+			});
+		}
+
+		if (parsedData.specifications) {
+			parsedData.specifications.forEach((item) => {
+				addDetailFormJson(item, DetailEnum.SPECIFICATION);
+			});
+		}
+
+		if (parsedData.equipment) {
+			parsedData.equipment.forEach((item) => {
+				addDetailFormJson(item, DetailEnum.EQUIPMENT);
+			});
+		}
+	}
 
 	// Добавление описания
 	const addDetail = (detailType: DetailEnum) => {
@@ -168,7 +291,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 		<>
 			<Row>
 				<Button
-					className="mb-4"
+					className="mb-2"
 					type="submit"
 					variant="warning"
 					disabled={loadingSaveButton}
@@ -182,6 +305,21 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 						<>Сохранить товар в базе данных</>
 					)}
 				</Button>
+				<Button
+					className="mb-4"
+					type="submit"
+					variant="primary"
+					onClick={handleJsonAddClick}
+				>
+					Загрузить JSON
+				</Button>
+				<input
+					type="file"
+					accept="application/json"
+					ref={inputJsonFileRef}
+					onChange={handleJsonFileChange}
+					style={{display: 'none'}}
+				/>
 			</Row>
 			<Row className="mb-4">
 				<Form.Group as={Col} lg="6">

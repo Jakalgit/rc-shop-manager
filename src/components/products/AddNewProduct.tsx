@@ -73,7 +73,7 @@ const AddNewProduct = () => {
 
 			await createProduct(formData, act);
 
-			alert("Product added successfully.");
+			alert("Товар успешно добавлен.");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);

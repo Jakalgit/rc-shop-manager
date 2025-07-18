@@ -15,8 +15,6 @@ export const PathEnum = {
 	PRODUCT: "/product/:id",
 } as const;
 
-export type PathEnum = keyof typeof PathEnum;
-
 export const routes: RouteConfig[] = [
 	{ path: PathEnum.DEFAULT, isPrivate: true, component: <Home /> },
 	{ path: PathEnum.LOGIN, component: <Login /> },

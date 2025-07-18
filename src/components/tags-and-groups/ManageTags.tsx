@@ -54,7 +54,7 @@ const ManageTags = () => {
 				setSaveTagButtonLoading(true);
 				const act: string = cookies.get("act") || "";
 
-				await updateTag({name: updateTagName, id: currentTagId, act, groupId: currentGroupId});
+				await updateTag({name: updateTagName, id: currentTagId, act, groupId: currentGroupId ? currentGroupId : null});
 				await getData();
 
 				alert("Успешно обновлено.");
@@ -158,6 +158,8 @@ const ManageTags = () => {
 		const tag = allTags.find(el => el.id === currentTagId);
 		if (tag) {
 			setUpdateTagName(tag.name);
+		} else {
+			setUpdateTagName("");
 		}
 	}, [currentGroupId]);
 

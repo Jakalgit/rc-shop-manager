@@ -19,7 +19,7 @@ export const createNewTag = async (name: string, act: string) => {
 }
 
 export const updateTag = async (
-	{id, groupId, name, act}: {id: number, groupId?: number, name: string, act: string}
+	{id, groupId, name, act}: {id: number, groupId: number | null, name: string, act: string}
 ) => {
 	const {data} = await $host.put('/tag/update-tag', {id, groupId, name}, {headers: {Authorization: `Bearer ${act}`}});
 	return data;

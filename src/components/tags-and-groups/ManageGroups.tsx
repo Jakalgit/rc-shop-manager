@@ -72,7 +72,7 @@ const ManageGroups = () => {
 				await deleteGroup({id: currentGroupId, act});
 				await getData();
 
-				alert("Успешно добавлено.");
+				alert("Успешно удалено.");
 			} catch (e: any) {
 				alert(e?.response?.data?.message);
 				console.log(e);
@@ -244,7 +244,7 @@ const ManageGroups = () => {
 												<span className="visually-hidden">Загрузка...</span>
 											</Spinner>
 										) : (
-											<>Обновить выбранную группу</>
+											<>Удалить выбранную группу</>
 										)}
 									</Button>
 								</Col>

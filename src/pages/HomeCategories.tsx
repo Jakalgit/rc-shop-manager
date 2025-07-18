@@ -1,13 +1,18 @@
 import Cookies from "universal-cookie";
 import {type ChangeEvent, useEffect, useRef, useState} from "react";
 import type {HomeCategoryResponse} from "../api/home-category/types.ts";
-import {createHomeCategory, deleteHomeCategory, getHomeCategories} from "../api/home-category/homeCatogoryApi.ts";
-import {Accordion, Button, Card, Col, Container, Image, Row, Spinner} from "react-bootstrap";
-import stylesProducts from "../styles/components/AllProduct.module.css";
+import {
+	createHomeCategory,
+	deleteHomeCategory,
+	getHomeCategories,
+	updateHomeCategoryImage
+} from "../api/home-category/homeCatogoryApi.ts";
+import {Accordion, Button, Col, Container, Image, Row, Spinner} from "react-bootstrap";
 import {getAllGroups} from "../api/tag/tagApi.ts";
 import type {GroupResponse} from "../api/tag/types.ts";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import CategoryCard from "../components/home-categories/CategoryCard.tsx";
 
 const HomeCategories = () => {
 
@@ -58,6 +63,23 @@ const HomeCategories = () => {
 			await getData();
 
 			alert("Успешно удалено.");
+		} catch (e: any) {
+			alert(e?.response?.data?.message);
+			console.log(e);
+		}
+	}
+
+	const updateImage = async (id: number, image: File) => {
+		try {
+			const act: string = cookies.get("act") || "";
+
+			const formData = new FormData();
+			formData.append("image", image);
+
+			await updateHomeCategoryImage({id, formData, act});
+			await getData();
+
+			alert("Изображение успешно обновлено.");
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 			console.log(e);
@@ -209,25 +231,11 @@ const HomeCategories = () => {
 			<Row>
 				{homeCategories.map((item, index) =>
 					<Col key={index} className="mt-3" lg={3}>
-						<Card className="h-100">
-							<Card.Img
-								className={stylesProducts.img}
-								src={`${import.meta.env.VITE_CLOUD_URL}/${item.image}`}
-								variant="top"
-							/>
-							<Card.Body>
-								<Card.Title>
-									{item.name}
-								</Card.Title>
-								<Button
-									className="mt-3"
-									onClick={() => deleteCurrentHomeCategory(item.id)}
-									variant="primary"
-								>
-									Удалить
-								</Button>
-							</Card.Body>
-						</Card>
+						<CategoryCard
+							item={item}
+							updateImage={updateImage}
+							deleteCurrentHomeCategory={deleteCurrentHomeCategory}
+						/>
 					</Col>
 				)}
 			</Row>

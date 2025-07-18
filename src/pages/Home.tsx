@@ -10,74 +10,84 @@ import Contacts from "./Contacts.tsx";
 import RepairServices from "./RepairServices.tsx";
 import UserRequestComponent from "./UserRequest.tsx";
 import HomeCategories from "./HomeCategories.tsx";
-import {useState} from "react";
+import PromotionSliderContent from "./PromotionSliderContent.tsx";
+import {TabParamEnum} from "../enums/tab-param.enum.ts";
+import {useSearchParams} from "react-router-dom";
 
 const Home = () => {
-
-	const [currentTab, setCurrentTab] = useState<string>("statistics");
 
 	const tabItems = [
 		{
 			name: 'Статистика',
 			eventKey: 'statistics',
 			tab: <></>,
-			path: '/statistics',
+			path: TabParamEnum.STATISTICS,
 		},
 		{
 			name: 'Товары',
 			eventKey: 'products',
 			tab: <Products />,
-			path: '/products'
+			path: TabParamEnum.PRODUCTS,
 		},
 		{
 			name: 'Теги и группы',
 			eventKey: 'tags_and_groups',
 			tab: <TagsAndGroups />,
-			path: '/tags-and-groups'
+			path: TabParamEnum.TAGS_AND_GROUPS
 		},
 		{
 			name: 'Изображения',
 			eventKey: 'images',
 			tab: <></>,
-			path: '/images'
+			path: TabParamEnum.IMAGES
 		},
 		{
 			name: 'Контакты',
 			eventKey: 'contacts',
 			tab: <Contacts />,
-			path: '/contacts'
+			path: TabParamEnum.CONTACTS
 		},
 		{
 			name: 'Услуги ремонта',
 			eventKey: 'repair_services',
 			tab: <RepairServices />,
-			path: '/repair-services'
+			path: TabParamEnum.REPAIR_SERVICES
 		},
 		{
 			name: 'Контент слайдера',
 			eventKey: 'slider_content',
-			tab: <></>,
-			path: '/slider-content',
+			tab: <PromotionSliderContent />,
+			path: TabParamEnum.SLIDER_CONTENT
 		},
 		{
 			name: 'Пользовательские запросы',
 			eventKey: 'user_requests',
 			tab: <UserRequestComponent />,
-			path: '/user-requests'
+			path: TabParamEnum.USER_REQUESTS
 		},
 		{
 			name: 'Категории стартовой стр.',
 			eventKey: 'home_categories',
 			tab: <HomeCategories />,
-			path: '/home-categories'
+			path: TabParamEnum.HOME_CATEGORIES
 		},
 		{
 			name: 'Заказы',
 			eventKey: 'orders',
 			tab: <></>,
-			path: '/orders'
+			path: TabParamEnum.ORDERS
 		}
-	]
+	];
+
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	let tabParam = searchParams.get("tab");
+	let tabComponent = tabItems.find(el => el.path === tabParam)?.tab;
+
+	if (!tabComponent) {
+		tabComponent = tabItems[0].tab;
+		setSearchParams({tab: TabParamEnum.STATISTICS});
+	}
 
 	return (
 		<Container fluid>
@@ -86,8 +96,8 @@ const Home = () => {
 					<Col lg={2} md={3}>
 						<Nav className={`flex-column ${styles.navbar}`} variant="pills">
 							{tabItems.map(item =>
-								<Nav.Item>
-									<Nav.Link onClick={() => setCurrentTab(item.eventKey)}>
+								<Nav.Item className={tabParam === item.path ? styles.selectedNavItem : ''}>
+									<Nav.Link onClick={() => setSearchParams({tab: item.path})}>
 										{item.name}
 									</Nav.Link>
 								</Nav.Item>
@@ -99,7 +109,7 @@ const Home = () => {
 						lg={10}
 						md={9}
 					>
-						{tabItems.find(el => el.eventKey === currentTab)?.tab}
+						{tabComponent}
 					</Col>
 				</Row>
 			</Tab.Container>
