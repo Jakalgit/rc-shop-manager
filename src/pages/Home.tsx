@@ -13,6 +13,7 @@ import HomeCategories from "./HomeCategories.tsx";
 import PromotionSliderContent from "./PromotionSliderContent.tsx";
 import {TabParamEnum} from "../enums/tab-param.enum.ts";
 import {useSearchParams} from "react-router-dom";
+import Partners from "./Partners.tsx";
 
 const Home = () => {
 
@@ -70,6 +71,12 @@ const Home = () => {
 			eventKey: 'home_categories',
 			tab: <HomeCategories />,
 			path: TabParamEnum.HOME_CATEGORIES
+		},
+		{
+			name: 'Партнеры',
+			eventKey: 'profile',
+			tab: <Partners />,
+			path: TabParamEnum.PARTNERS,
 		},
 		{
 			name: 'Заказы',

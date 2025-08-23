@@ -67,7 +67,7 @@ const UserRequestComponent = () => {
 				<>
 					<Row className="mt-4">
 						{items.map((item, index) =>
-							<Col className="mt-3" key={index} lg={12}>
+							<Col className="mt-3" key={index} md={12}>
 								<Card className="h-100">
 									<Card.Body>
 										<Row className="mb-3">

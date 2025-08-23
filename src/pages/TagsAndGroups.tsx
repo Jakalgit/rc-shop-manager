@@ -1,7 +1,6 @@
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
 import ManageGroups from "../components/tags-and-groups/ManageGroups.tsx";
 import ManageTags from "../components/tags-and-groups/ManageTags.tsx";
+import TabsComponent from "../components/TabsComponent.tsx";
 
 const TagsAndGroups = () => {
 
@@ -19,18 +18,7 @@ const TagsAndGroups = () => {
 	]
 
 	return (
-		<Tabs
-			defaultActiveKey="manage_tags"
-			id="justify-tab-example"
-			className="mb-4"
-			justify
-		>
-			{tabItems.map((item) =>
-				<Tab eventKey={item.eventKey} title={item.title}>
-					{item.tsx}
-				</Tab>
-			)}
-		</Tabs>
+		<TabsComponent items={tabItems} />
 	);
 };
 

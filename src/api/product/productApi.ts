@@ -29,7 +29,7 @@ export const getProductPagination = async (
 	const str = searchParams.toString();
 
 	const {data} = await $host.get(
-		`/product/catalog${str.length > 0 ? `?${str}` : ''}`,
+		`/product/manager-catalog${str.length > 0 ? `?${str}` : ''}`,
 		{headers: {Authorization: `Bearer ${act}`}}
 	);
 	return data;

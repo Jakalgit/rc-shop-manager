@@ -16,7 +16,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({children}) 
 	const cookies = new Cookies();
 
 	const [auth, setAuth] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const signIn = (act: string) => {
 		setAuth(true);

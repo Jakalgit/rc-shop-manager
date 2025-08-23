@@ -10,4 +10,5 @@ export const TabParamEnum = {
 	USER_REQUESTS: 'user-requests',
 	HOME_CATEGORIES: 'home-categories',
 	ORDERS: 'orders',
+	PARTNERS: 'profile',
 } as const;
