@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import styles from "../styles/pages/Login.module.css";
 import {useAuth} from "../components/AuthContext.tsx";
 import {auth} from "../api/authApi.ts";
+import {useNavigate} from "react-router-dom";
 
 const Login: React.FC = () => {
 
@@ -12,10 +13,13 @@ const Login: React.FC = () => {
 	const [login, setLogin] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 
+	const navigate = useNavigate();
+
 	const sendCredentials = async () => {
 		try {
 			const response = await auth(login, password);
 			signIn(response.act);
+			navigate("/statistics")
 		} catch (e: any) {
 			alert(`Error: ${e.response.data.message}`)
 		}
