@@ -32,7 +32,7 @@ function Order() {
 	const [buttonSaveLoading, setButtonSaveLoading] = useState(false);
 
 	const [formState, setFormState] = useState<OrderResponse | null>(null);
-	const [comment, setComment] = useState<string>("");
+	const [actionComment, setActionComment] = useState<string>("");
 
 	const handleSave = useCallback(async () => {
 		if (!orderNumber) return;
@@ -57,15 +57,21 @@ function Order() {
 				paidAt: formState?.paidAt,
 				paymentStatus: formState?.paymentStatus,
 				transactionId: formState?.transactionId,
+				systemComment: formState?.systemComment,
 				comment: formState?.comment,
+				status: formState?.status,
 				profileId: formState?.profileId,
+				actionComment,
 				token: act,
-			})
+			});
+
+			alert("Данные обновлены");
+			window.location.reload();
 		} catch (e: any) {
 			alert(e?.response?.data?.message);
 		}
 		setButtonSaveLoading(false);
-	}, [formState]);
+	}, [formState, actionComment]);
 
 	const handleChange = <K extends keyof OrderResponse>(field: K, value: OrderResponse[K]) => {
 		setFormState(prev => ({ ...prev, [field]: value } as OrderResponse));
@@ -116,7 +122,7 @@ function Order() {
 						<Form.Label>Имя</Form.Label>
 						<Form.Control
 							value={formState?.guestName ?? ""}
-							onChange={e => handleChange("guestName", (e.target.value || undefined) as any)}
+							onChange={e => handleChange("guestName", (e.target.value || null) as any)}
 						/>
 					</Form.Group>
 				</Col>
@@ -125,7 +131,7 @@ function Order() {
 						<Form.Label>Телефон</Form.Label>
 						<Form.Control
 							value={formState?.guestPhone ?? ""}
-							onChange={e => handleChange("guestPhone", (e.target.value || undefined) as any)}
+							onChange={e => handleChange("guestPhone", (e.target.value || null) as any)}
 						/>
 					</Form.Group>
 				</Col>
@@ -135,7 +141,7 @@ function Order() {
 				<Form.Label>Email</Form.Label>
 				<Form.Control
 					value={formState?.guestEmail ?? ""}
-					onChange={e => handleChange("guestEmail", (e.target.value || undefined) as any)}
+					onChange={e => handleChange("guestEmail", (e.target.value || null) as any)}
 				/>
 			</Form.Group>
 
@@ -143,7 +149,7 @@ function Order() {
 				<Form.Label>Адрес</Form.Label>
 				<Form.Control
 					value={formState?.address ?? ""}
-					onChange={e => handleChange("address", (e.target.value || undefined) as any)}
+					onChange={e => handleChange("address", (e.target.value || null) as any)}
 				/>
 			</Form.Group>
 
@@ -152,8 +158,9 @@ function Order() {
 				<Form.Label>Profile ID</Form.Label>
 				<Form.Control
 					value={(formState as any).profileId ?? ""}
-					onChange={e => handleChange("profileId" as any, (e.target.value.trim() === "" ? undefined : e.target.value) as any)}
+					onChange={e => handleChange("profileId" as any, (e.target.value.trim() === "" ? null : e.target.value) as any)}
 				/>
+				<Form.Text>ID профиля клиента</Form.Text>
 			</Form.Group>
 
 			{/* Enum fields (nullable support) */}
@@ -163,12 +170,17 @@ function Order() {
 						<Form.Label>Способ доставки</Form.Label>
 						<Form.Select
 							value={formState?.deliveryMethod ?? ""}
-							onChange={e => handleChange("deliveryMethod", (e.target.value === "" ? undefined : e.target.value) as any)}
+							onChange={e => handleChange("deliveryMethod", (e.target.value === "" ? null : e.target.value) as any)}
 						>
 							{enumValues(DeliveryMethodEnum).map(v => (
 								<option key={v} value={v}>{v}</option>
 							))}
 						</Form.Select>
+						<Form.Text>
+							self_pickup - самовывоз<br/>
+							delivery_moscow - доставка по Москве<br/>
+							delivery_country - доставка по России (в регионы)
+						</Form.Text>
 					</Form.Group>
 				</Col>
 
@@ -177,22 +189,28 @@ function Order() {
 						<Form.Label>Статус доставки</Form.Label>
 						<Form.Select
 							value={formState?.deliveryStatus ?? ""}
-							onChange={e => handleChange("deliveryStatus", (e.target.value === "" ? undefined : e.target.value) as any)}
+							onChange={e => handleChange("deliveryStatus", (e.target.value === "" ? null : e.target.value) as any)}
 						>
 							<option value="">—</option>
 							{enumValues(DeliveryStatusEnum).map(v => (
 								<option key={v} value={v}>{v}</option>
 							))}
 						</Form.Select>
+						<Form.Text>
+							— - пустое поле<br/>
+							pending - в обработке<br/>
+							shipped - отправлено<br/>
+							delivered - доставлено
+						</Form.Text>
 					</Form.Group>
 				</Col>
 
 				<Col md={4}>
 					<Form.Group className="mb-3">
-						<Form.Label>Трек-номер</Form.Label>
+						<Form.Label>Трек-номер посылки</Form.Label>
 						<Form.Control
 							value={formState?.trackingNumber ?? ""}
-							onChange={e => handleChange("trackingNumber", (e.target.value.trim() === "" ? undefined : e.target.value) as any)}
+							onChange={e => handleChange("trackingNumber", (e.target.value.trim() === "" ? null : e.target.value) as any)}
 						/>
 					</Form.Group>
 				</Col>
@@ -204,12 +222,16 @@ function Order() {
 						<Form.Label>Способ оплаты</Form.Label>
 						<Form.Select
 							value={formState?.paymentMethod ?? ""}
-							onChange={e => handleChange("paymentMethod", (e.target.value === "" ? undefined : e.target.value) as any)}
+							onChange={e => handleChange("paymentMethod", (e.target.value === "" ? null : e.target.value) as any)}
 						>
 							{enumValues(PaymentMethodEnum).map(v => (
 								<option key={v} value={v}>{v}</option>
 							))}
 						</Form.Select>
+						<Form.Text>
+							cash_on_delivery - оплата при получении<br/>
+							online - оплата онлайн (онлайн касса, перевод и т.д.)
+						</Form.Text>
 					</Form.Group>
 				</Col>
 
@@ -218,13 +240,19 @@ function Order() {
 						<Form.Label>Статус оплаты</Form.Label>
 						<Form.Select
 							value={formState?.paymentStatus ?? ""}
-							onChange={e => handleChange("paymentStatus", (e.target.value === "" ? undefined : e.target.value) as any)}
+							onChange={e => handleChange("paymentStatus", (e.target.value === "" ? null : e.target.value) as any)}
 						>
 							<option value="">—</option>
 							{enumValues(PaymentStatusEnum).map(v => (
 								<option key={v} value={v}>{v}</option>
 							))}
 						</Form.Select>
+						<Form.Text>
+							pending - платеж в обработке<br/>
+							paid - успешно оплачено<br />
+							failed - ошибка платежа<br />
+							refunded - возврат средств
+						</Form.Text>
 					</Form.Group>
 				</Col>
 
@@ -233,12 +261,20 @@ function Order() {
 						<Form.Label>Статус заказа</Form.Label>
 						<Form.Select
 							value={formState?.status ?? ""}
-							onChange={e => handleChange("status", (e.target.value === "" ? undefined : e.target.value) as any)}
+							onChange={e => handleChange("status", (e.target.value === "" ? null : e.target.value) as any)}
 						>
 							{enumValues(OrderStatusEnum).map(v => (
 								<option key={v} value={v}>{v}</option>
 							))}
 						</Form.Select>
+						<Form.Text>
+							При переводе из (pending -{`>`} confirmed, confirmed -{`>`} completed) клиенту автоматически
+							отправляется письмо на почту c уведомлением<br/>
+							pending - ожидает обработки<br/>
+							confirmed - принят<br />
+							canceled - отменён<br />
+							completed - завершён
+						</Form.Text>
 					</Form.Group>
 				</Col>
 			</Row>
@@ -252,10 +288,10 @@ function Order() {
 							<Form.Control
 								type="datetime-local"
 								value={toInputDateTime(formState?.deliveredAt as any)}
-								onChange={e => handleChange("deliveredAt", (e.target.value === "" ? undefined : new Date(e.target.value).toISOString()) as any)}
+								onChange={e => handleChange("deliveredAt", (e.target.value === "" ? null : new Date(e.target.value).toISOString()) as any)}
 							/>
 							<Button variant="outline-secondary"
-											onClick={() => handleChange("deliveredAt", undefined as any)}>Очистить</Button>
+											onClick={() => handleChange("deliveredAt", null as any)}>Очистить</Button>
 						</InputGroup>
 					</Form.Group>
 				</Col>
@@ -267,9 +303,9 @@ function Order() {
 							<Form.Control
 								type="datetime-local"
 								value={toInputDateTime(formState?.paidAt as any)}
-								onChange={e => handleChange("paidAt", (e.target.value === "" ? undefined : new Date(e.target.value).toISOString()) as any)}
+								onChange={e => handleChange("paidAt", (e.target.value === "" ? null : new Date(e.target.value).toISOString()) as any)}
 							/>
-							<Button variant="outline-secondary" onClick={() => handleChange("paidAt", undefined as any)}>Очистить</Button>
+							<Button variant="outline-secondary" onClick={() => handleChange("paidAt", null as any)}>Очистить</Button>
 						</InputGroup>
 					</Form.Group>
 				</Col>
@@ -283,7 +319,7 @@ function Order() {
 						<Form.Control
 							type="number"
 							value={formState?.deliveryPrice ?? ""}
-							onChange={e => handleChange("deliveryPrice", (e.target.value === "" ? undefined : Number(e.target.value)) as any)}
+							onChange={e => handleChange("deliveryPrice", (e.target.value === "" ? null : Number(e.target.value)) as any)}
 						/>
 					</Form.Group>
 				</Col>
@@ -293,8 +329,11 @@ function Order() {
 						<Form.Control
 							type="number"
 							value={formState?.discount ?? ""}
-							onChange={e => handleChange("discount", (e.target.value === "" ? undefined : Number(e.target.value)) as any)}
+							onChange={e => handleChange("discount", (e.target.value === "" ? null : Number(e.target.value)) as any)}
 						/>
+						<Form.Text>
+							Скидка заказа (промокод, акция и т.д.)
+						</Form.Text>
 					</Form.Group>
 				</Col>
 			</Row>
@@ -304,8 +343,11 @@ function Order() {
 				<Form.Label>Transaction ID</Form.Label>
 				<Form.Control
 					value={(formState as any).transactionId ?? ""}
-					onChange={e => handleChange("transactionId" as any, (e.target.value.trim() === "" ? undefined : e.target.value) as any)}
+					onChange={e => handleChange("transactionId" as any, (e.target.value.trim() === "" ? null : e.target.value) as any)}
 				/>
+				<Form.Text>
+					ID записи транзакции в системе онлайн оплаты
+				</Form.Text>
 			</Form.Group>
 
 			<Form.Group className="mb-3">
@@ -314,8 +356,11 @@ function Order() {
 					as="textarea"
 					rows={2}
 					value={formState?.comment ?? ""}
-					onChange={e => handleChange("comment", (e.target.value.trim() === "" ? undefined : e.target.value) as any)}
+					onChange={e => handleChange("comment", (e.target.value.trim() === "" ? null : e.target.value) as any)}
 				/>
+				<Form.Text>
+					Комментарий клиента
+				</Form.Text>
 			</Form.Group>
 
 			<Form.Group className="mb-3">
@@ -324,8 +369,11 @@ function Order() {
 					as="textarea"
 					rows={2}
 					value={formState?.systemComment ?? ""}
-					onChange={e => handleChange("systemComment", (e.target.value.trim() === "" ? undefined : e.target.value) as any)}
+					onChange={e => handleChange("systemComment", (e.target.value.trim() === "" ? null : e.target.value) as any)}
 				/>
+				<Form.Text>
+					Комментарий от администратора для пользователя, например, как и где забрать заказ и т.п.
+				</Form.Text>
 			</Form.Group>
 
 			{/* Items (edit + delete) */}
@@ -353,11 +401,11 @@ function Order() {
 						</td>
 						<td>
 							<Form.Control type="number" value={item.price ?? ""}
-														onChange={e => handleItemChange(idx, "price", (e.target.value === "" ? undefined : Number(e.target.value)))}/>
+														onChange={e => handleItemChange(idx, "price", (e.target.value === "" ? null : Number(e.target.value)))}/>
 						</td>
 						<td>
 							<Form.Control type="number" value={item.quantity ?? ""}
-														onChange={e => handleItemChange(idx, "quantity", (e.target.value === "" ? undefined : Number(e.target.value)))}/>
+														onChange={e => handleItemChange(idx, "quantity", (e.target.value === "" ? null : Number(e.target.value)))}/>
 						</td>
 						<td>
 							<Form.Control value={item.productId ?? ""}
@@ -376,19 +424,28 @@ function Order() {
 			<Table bordered size="sm">
 				<thead>
 				<tr>
-					<th>ID</th>
+					<th>Комментарий</th>
 					<th>Тип</th>
 					<th>Актор</th>
-					<th>Комментарий</th>
+					<th>Дата</th>
 				</tr>
 				</thead>
 				<tbody>
 				{(formState?.activities || []).map(act => (
 					<tr key={act.id}>
-						<td>{act.id}</td>
+						<td>{act.comment}</td>
 						<td>{act.actionType}</td>
 						<td>{act.actorType}</td>
-						<td>{act.comment}</td>
+						<td>
+							{(new Date(act.createdAt)).toLocaleDateString("ru-RU", {
+								day: "2-digit",
+								month: "2-digit",
+								year: "numeric",
+								hour: "2-digit",
+								minute: "2-digit",
+								second: "2-digit",
+							})}
+						</td>
 					</tr>
 				))}
 				</tbody>
@@ -397,18 +454,18 @@ function Order() {
 			{/* Comment + Save */}
 			<Form.Group className="mb-3">
 				<Form.Label>Комментарий к изменению</Form.Label>
-				<Form.Control as="textarea" rows={3} value={comment} onChange={e => setComment(e.target.value)}/>
+				<Form.Control as="textarea" rows={3} value={actionComment} onChange={e => setActionComment(e.target.value)}/>
 			</Form.Group>
 
 			<div className="d-flex gap-2 mb-3">
 				<Button
 					variant="primary"
 					onClick={handleSave}
-					disabled={!comment.trim() || buttonSaveLoading}
+					disabled={!actionComment.trim() || buttonSaveLoading}
 				>
 					{buttonSaveLoading ? "Загрузка..." : "Сохранить"}
 				</Button>
-				{!comment.trim() &&
+				{!actionComment.trim() &&
             <div className="text-muted small align-self-center">Укажите комментарий, чтобы сохранить</div>}
 			</div>
 		</Container>

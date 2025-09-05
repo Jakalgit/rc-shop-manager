@@ -2,7 +2,7 @@ import {$host} from "../index.ts";
 import {
 	DeliveryMethodEnum,
 	DeliveryStatusEnum,
-	type OrderResponse,
+	type OrderResponse, OrderStatusEnum,
 	PaymentMethodEnum,
 	PaymentStatusEnum
 } from "./types.ts";
@@ -37,10 +37,12 @@ export const saveOrder = async (
 		discount?: number;
 		paidAt?: string;
 		paymentStatus?: typeof PaymentStatusEnum[keyof typeof PaymentStatusEnum];
+		status?: typeof OrderStatusEnum[keyof typeof OrderStatusEnum];
 		transactionId?: string;
 		comment?: string;
 		systemComment?: string;
 		profileId?: string;
+		actionComment: string;
 		token: string;
 	}
 ): Promise<void> => {

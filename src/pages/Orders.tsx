@@ -39,7 +39,6 @@ function Order() {
 
 			setLoading(false);
 		} catch (e: any) {
-			console.error(e);
 			alert(e.response?.data?.message);
 		}
 	}

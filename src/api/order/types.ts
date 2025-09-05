@@ -55,13 +55,14 @@ export type OrderItem = {
 export type OrderAction = {
 	id: string;
 	actionType: typeof OrderActionEnum[keyof typeof OrderActionEnum];
-	oldValue: JSON | null;
-	newValue: JSON | null;
+	oldValue: string | null;
+	newValue: string | null;
 	actorType: typeof OrderActionActorEnum[keyof typeof OrderActionActorEnum];
 	userAgent: string | null;
 	ipAddress: string | null;
 	comment: string;
 	orderId: string;
+	createdAt: string;
 }
 
 export type OrderResponse = {
