@@ -56,6 +56,11 @@ function MenuLayout() {
 			path: PathEnum.HOME_PAGE_CATEGORIES,
 		},
 		{
+			name: 'Доставка и оплата',
+			eventKey: 'delivery_and_payments',
+			path: PathEnum.DELIVERY_AND_PAYMENTS
+		},
+		{
 			name: 'Партнеры',
 			eventKey: 'profile',
 			path: PathEnum.PARTNERS,

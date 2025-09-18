@@ -11,6 +11,7 @@ import HomeCategories from "../pages/HomeCategories.tsx";
 import Contacts from "../pages/Contacts.tsx";
 import Orders from "../pages/Orders.tsx";
 import Order from "../pages/Order.tsx";
+import {DeliveryAndPayments} from "../pages/DeliveryAndPayments.tsx";
 
 export interface RouteConfig {
 	path: string;
@@ -33,6 +34,7 @@ export const PathEnum = {
 	CONTACTS: "/contacts",
 	IMAGES: "/images",
 	ORDER: "/order/:orderNumber",
+	DELIVERY_AND_PAYMENTS: "/delivery-and-payments",
 } as const;
 
 export const routes: RouteConfig[] = [
@@ -50,4 +52,5 @@ export const routes: RouteConfig[] = [
 	{ path: PathEnum.CONTACTS, component: <Contacts /> },
 	{ path: PathEnum.IMAGES, component: <></> },
 	{ path: PathEnum.ORDER, component: <Order /> },
+	{ path: PathEnum.DELIVERY_AND_PAYMENTS, component: <DeliveryAndPayments /> }
 ]
