@@ -7,7 +7,8 @@ export const DeliveryMethodEnum = {
 
 export const PaymentMethodEnum =  {
 	CASH_ON_DELIVERY: "cash_on_delivery",
-	ONLINE: "online",
+	SBP: "sbp",
+	BANK_TRANSFER: "bank_transfer",
 } as const;
 
 export const DeliveryStatusEnum = {
