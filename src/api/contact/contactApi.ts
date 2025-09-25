@@ -2,9 +2,10 @@ import {$host} from "../index.ts";
 import type {ContactResponse} from "./types.ts";
 
 export const updateContacts = async (
-	{phone, address, email, act}: {phone: string, address: string, email: string, act: string},
+	{act, ...rest}:
+	{phone: string, address: string, email: string, tgIdentifier: string, whatsappIdentifier: string, workTime: string, act: string},
 ) => {
-	const {data} = await $host.put('/contact', {phone, address, email}, {headers: {Authorization: `Bearer ${act}`}});
+	const {data} = await $host.put('/contact', rest, {headers: {Authorization: `Bearer ${act}`}});
 	return data;
 }
 

@@ -147,7 +147,7 @@ export const DeliveryAndPayments = () => {
 								as="textarea"
 								rows={4}
 								id="decription"
-								placeholder="Введите цену услуги..."
+								placeholder="Введите описание блока"
 								aria-label="Описание"
 								value={item.description}
 								onChange={(e) => changeDescription(item.id, e.target.value)}
