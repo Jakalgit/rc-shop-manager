@@ -7,11 +7,11 @@ import TagsAndGroups from "../pages/TagsAndGroups.tsx";
 import UserRequest from "../pages/UserRequest.tsx";
 import RepairServices from "../pages/RepairServices.tsx";
 import PromotionSliderContent from "../pages/PromotionSliderContent.tsx";
-import HomeCategories from "../pages/HomeCategories.tsx";
 import Contacts from "../pages/Contacts.tsx";
 import Orders from "../pages/Orders.tsx";
 import Order from "../pages/Order.tsx";
 import {DeliveryAndPayments} from "../pages/DeliveryAndPayments.tsx";
+import Categories from "../pages/Categories.tsx";
 
 export interface RouteConfig {
 	path: string;
@@ -48,7 +48,7 @@ export const routes: RouteConfig[] = [
 	{ path: PathEnum.USER_REQUESTS, component: <UserRequest /> },
 	{ path: PathEnum.REPAIR_SERVICES, component: <RepairServices /> },
 	{ path: PathEnum.PROMOTION_SLIDER_CONTENT, component: <PromotionSliderContent /> },
-	{ path: PathEnum.HOME_PAGE_CATEGORIES, component: <HomeCategories /> },
+	{ path: PathEnum.HOME_PAGE_CATEGORIES, component: <Categories /> },
 	{ path: PathEnum.CONTACTS, component: <Contacts /> },
 	{ path: PathEnum.IMAGES, component: <></> },
 	{ path: PathEnum.ORDER, component: <Order /> },

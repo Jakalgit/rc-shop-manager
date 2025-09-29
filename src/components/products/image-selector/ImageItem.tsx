@@ -18,6 +18,10 @@ const ImageItem: React.FC<IProps> = ({ preview, files }) => {
 		imageUrl = URL.createObjectURL(file);
 	}
 
+	if (imageUrl.length === 0) {
+		return null;
+	}
+
 	return (
 		<>
 			<p>{preview.filename}</p>
