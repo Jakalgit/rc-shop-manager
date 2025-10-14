@@ -9,6 +9,9 @@ export type NewSlide = {
 	id: number;
 	file: File | null;
 	href: string;
+	title: string;
+	text: string;
+	buttonText: string;
 }
 
 const PromotionSliderContent = () => {
@@ -20,7 +23,7 @@ const PromotionSliderContent = () => {
 	const [slides, setSlides] = useState<(SlideResponse | NewSlide)[]>([]);
 
 	const addNewSlide = () => {
-		setSlides(prevState => [...prevState, {id: -Date.now(), file: null, href: ''}]);
+		setSlides(prevState => [...prevState, {id: -Date.now(), file: null, href: '', buttonText: '', title: '', text: ''}]);
 	}
 
 	const removeSlide = (id: number) => {
@@ -59,15 +62,18 @@ const PromotionSliderContent = () => {
 		}
 	}
 
-	const updateHrefForSlide = (id: number, href: string) => {
-		setSlides(prevState => prevState.map(el => {
-			if (el.id === id) {
-				return {
-					...el,
-					href,
+	function updateValueForSlide<T extends { id: number }, K extends keyof T>(id: number, field: K, value: T[K]) {
+		setSlides(prevState =>
+			prevState.map(el => {
+				if (el.id === id) {
+					return {
+						...el,
+						[field]: value
+					}
 				}
-			} else return el;
-		}))
+				return el
+			})
+		)
 	}
 
 	const saveSlides = async () => {
@@ -84,12 +90,18 @@ const PromotionSliderContent = () => {
 					return {
 						href: slide.href,
 						filename: slide.file?.name,
+						title: slide.title,
+						text: slide.text,
+						buttonText: slide.buttonText,
 					}
 				} else {
 					return {
 						id: slide.id,
 						href: slide.href,
 						imageId: (slide as SlideResponse).imageId,
+						title: slide.title,
+						text: slide.text,
+						buttonText: slide.buttonText,
 					}
 				}
 			});
@@ -182,7 +194,7 @@ const PromotionSliderContent = () => {
 						moveDown={moveDown}
 						removeSlide={removeSlide}
 						pinFileForSlide={pinFileForSlide}
-						updateHrefForSlide={updateHrefForSlide}
+						updateValueForSlide={updateValueForSlide}
 					/>
 				)}
 			</Row>

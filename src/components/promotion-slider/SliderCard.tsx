@@ -12,10 +12,10 @@ interface IProps {
 	moveDown: (slide: NewSlide | SlideResponse) => void;
 	removeSlide: (id: number) => void;
 	pinFileForSlide: (id: number, file: File) => void;
-	updateHrefForSlide: (id: number, href: string) => void;
+	updateValueForSlide: <T extends { id: number }, K extends keyof T>(id: number, field: K, value: T[K]) => void;
 }
 
-const SliderCard: React.FC<IProps> = ({ slide, slides, moveDown, moveUp, removeSlide, pinFileForSlide, updateHrefForSlide }) => {
+const SliderCard: React.FC<IProps> = ({ slide, slides, moveDown, moveUp, removeSlide, pinFileForSlide, updateValueForSlide }) => {
 
 	const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -88,13 +88,48 @@ const SliderCard: React.FC<IProps> = ({ slide, slides, moveDown, moveUp, removeS
 							</Col>
 						)}
 						<Row className="mt-3">
-							<Form.Group as={Col} md="12">
+							<Form.Group as={Col} md="6">
 								<InputGroup>
 									<Form.Control
 										placeholder="Введите ссылку слайда"
 										aria-label="Ссылка слайда"
 										value={slide.href}
-										onChange={(e) => updateHrefForSlide(slide.id, e.target.value)}
+										onChange={(e) => updateValueForSlide<typeof slide, "href">(slide.id, "href", e.target.value)}
+									/>
+								</InputGroup>
+							</Form.Group>
+							<Form.Group as={Col} md="6">
+								<InputGroup>
+									<Form.Control
+										placeholder="Введите заголовок слайда (например 'Traxxas')"
+										aria-label="Заголовок слайда"
+										value={slide.title}
+										onChange={(e) =>
+											updateValueForSlide<typeof slide, "title">(slide.id, "title", e.target.value)}
+									/>
+								</InputGroup>
+							</Form.Group>
+						</Row>
+						<Row className="mt-3">
+							<Form.Group as={Col} md="6">
+								<InputGroup>
+									<Form.Control
+										placeholder="Введите текст слайда (например 'Модели, провернные временем')"
+										aria-label="Текст слайда"
+										value={slide.text}
+										onChange={(e) =>
+											updateValueForSlide<typeof slide, "text">(slide.id, "text", e.target.value)}
+									/>
+								</InputGroup>
+							</Form.Group>
+							<Form.Group as={Col} md="6">
+								<InputGroup>
+									<Form.Control
+										placeholder="Введите текст кнопки (например 'Посмотреть')"
+										aria-label="Текст кнопки"
+										value={slide.buttonText}
+										onChange={(e) =>
+											updateValueForSlide<typeof slide, "buttonText">(slide.id, "buttonText", e.target.value)}
 									/>
 								</InputGroup>
 							</Form.Group>
