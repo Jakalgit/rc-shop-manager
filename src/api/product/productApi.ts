@@ -26,6 +26,10 @@ export const getProductPagination = async (
 		}
 	});
 
+	if (!searchParams.get('unavailable')) {
+		searchParams.set('unavailable', '1');
+	}
+
 	const str = searchParams.toString();
 
 	const {data} = await $host.get(
