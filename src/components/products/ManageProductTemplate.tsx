@@ -7,6 +7,7 @@ import ImageSelector from "./image-selector/ImageSelector.tsx";
 import React, {type ChangeEvent, useEffect, useRef, useState} from "react";
 import type {TagResponse} from "../../api/tag/types.ts";
 import type {JsonProductType} from "../../types/json-product.type.ts";
+import {ProductGroupsAccordion} from "./ProductGroupsAccordion.tsx";
 
 export interface ISaveProductArguments {
 	id?: number,
@@ -23,10 +24,13 @@ export interface ISaveProductArguments {
 	height: string,
 	length: string,
 	weight: string,
+	productGroupId: number | null;
 	details: {id: number, text: string, detailType: DetailEnum}[],
 	previews: {imageId?: number, filename: string}[],
 	files: File[],
 	selectedTags: TagResponse[],
+	partsUrl: string,
+	tuningUrl: string,
 }
 
 export type GetDataProps = {
@@ -46,6 +50,9 @@ export type GetDataProps = {
 	setDetails: (value: React.SetStateAction<{id: number; text: string; detailType: DetailEnum }[]>) => void;
 	setSelectedTags: (value: React.SetStateAction<TagResponse[]>) => void;
 	setPreviews: (value: React.SetStateAction<{imageId?: number; filename: string}[]>) => void;
+	setPartsUrl: (value: React.SetStateAction<string>) => void;
+	setTuningUrl: (value: React.SetStateAction<string>) => void;
+	setProductGroupId: (value: React.SetStateAction<number | null>) => void;
 }
 
 interface IProps {
@@ -77,6 +84,8 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	const [visibility, setVisibility] = useState<boolean>(true);
 	const [count, setCount] = useState<number>(0);
 
+	const [productGroupId, setProductGroupId] = useState<number | null>(null);
+
 	const [oldPrice, setOldPrice] = useState<string>('');
 	const [promotionPercentage, setPromotionPercentage] = useState<string>('');
 
@@ -84,6 +93,9 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	const [weight, setWeight] = useState<string>('');
 	const [width, setWidth] = useState<string>('');
 	const [length, setLength] = useState<string>('');
+
+	const [partsUrl, setPartsUrl] = useState<string>('');
+	const [tuningUrl, setTuningUrl] = useState<string>('');
 
 	const [details, setDetails] = useState<{id: number, text: string, detailType: DetailEnum}[]>([]);
 
@@ -131,6 +143,8 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 				description: 'string[]',
 				specifications: 'string[]',
 				equipment: 'string[]',
+				partsUrl: 'string',
+				tuningUrl: 'string',
 			};
 
 			return Object.entries(schema).every(([key, type]) => {
@@ -175,6 +189,8 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			{value: parsedData.height, setValue: setHeight},
 			{value: parsedData.width, setValue: setWidth},
 			{value: parsedData.weight, setValue: setWeight},
+			{value: parsedData.partsUrl, setValue: setPartsUrl},
+			{value: parsedData.tuningUrl, setValue: setTuningUrl},
 		];
 
 		jsonToSet.forEach((item) => {
@@ -244,14 +260,16 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	const save = async () => {
 		saveProductInDatabase({
 			id, name, availability, visibility, count, price, article, oldPrice, promotionPercentage,
-			details, previews, files, selectedTags, width, height, length, weight, wholesalePrice
+			details, previews, files, selectedTags, width, height, length, weight, wholesalePrice,
+			partsUrl, tuningUrl, productGroupId
 		});
 	}
 
 	const fetchData = async () => {
 		getData({
 			setAllTags, setFinderTags, setName, setPrice, setArticle, setCount, setOldPrice, setPromotionPercentage,
-			setWidth, setHeight, setLength, setWeight, setDetails, setPreviews, setSelectedTags, setWholesalePrice
+			setWidth, setHeight, setLength, setWeight, setDetails, setPreviews, setSelectedTags, setWholesalePrice,
+			setPartsUrl, setTuningUrl, setProductGroupId
 		}).then(() => setLoading(false));
 	}
 
@@ -472,6 +490,32 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 				</Form.Group>
 			</Row>
 			<Row className="mb-4">
+				<Form.Group as={Col} lg="6">
+					<Form.Label htmlFor="parts-url">Ссылка на каталог запчастей</Form.Label>
+					<InputGroup>
+						<Form.Control
+							id="parts-url"
+							placeholder="Ссылка"
+							aria-label="Ссылка"
+							value={partsUrl}
+							onChange={(e) => setPartsUrl(e.target.value)}
+						/>
+					</InputGroup>
+				</Form.Group>
+				<Form.Group as={Col} lg="6">
+					<Form.Label htmlFor="tuning-url">Ссылка на каталог тюнинга</Form.Label>
+					<InputGroup>
+						<Form.Control
+							id="tuning-url"
+							placeholder="Ссылка"
+							aria-label="Ссылка"
+							value={tuningUrl}
+							onChange={(e) => setTuningUrl(e.target.value)}
+						/>
+					</InputGroup>
+				</Form.Group>
+			</Row>
+			<Row className="mb-4">
 				<Accordion>
 					<Accordion.Item eventKey="0">
 						<Accordion.Header>Скидка на товар ({isNumeric(oldPrice) ? 'Активна' : 'Неактивна'})</Accordion.Header>
@@ -558,6 +602,12 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 								</Form.Group>
 							</Row>
 						</Accordion.Body>
+					</Accordion.Item>
+					<Accordion.Item eventKey="2">
+						<ProductGroupsAccordion
+							productGroupId={productGroupId}
+							setProductGroupId={setProductGroupId}
+						/>
 					</Accordion.Item>
 				</Accordion>
 			</Row>

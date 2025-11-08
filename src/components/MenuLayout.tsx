@@ -26,6 +26,11 @@ function MenuLayout() {
 			path: PathEnum.TAGS_AND_GROUPS,
 		},
 		{
+			name: 'Группы похожих товаров',
+			eventKey: 'similar_products',
+			path: PathEnum.SIMILAR_PRODUCT_GROUPS,
+		},
+		{
 			name: 'Изображения',
 			eventKey: 'images',
 			path: PathEnum.IMAGES,

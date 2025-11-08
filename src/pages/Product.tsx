@@ -55,13 +55,11 @@ const Product = () => {
 			formData.append("wholesalePrice", String(props.wholesalePrice));
 			formData.append("article", props.article);
 
-			if (props.oldPrice) {
-				formData.append("oldPrice", props.oldPrice);
-			}
-
-			if (props.promotionPercentage) {
-				formData.append("promotionPercentage", props.promotionPercentage);
-			}
+			if (props.oldPrice) formData.append("oldPrice", props.oldPrice);
+			if (props.promotionPercentage) formData.append("promotionPercentage", props.promotionPercentage);
+			if (props.partsUrl) formData.append("partsUrl", props.partsUrl);
+			if (props.tuningUrl) formData.append("tuningUrl", props.tuningUrl);
+			if (props.productGroupId) formData.append('productGroupId', String(props.productGroupId));
 
 			formData.append("previews", JSON.stringify(
 				props.previews.map((el, index) => {
@@ -136,6 +134,11 @@ const Product = () => {
 				props.setLength((item.length || "").toString());
 				props.setWidth((item.width || "").toString());
 				props.setHeight((item.height || "").toString());
+
+				props.setPartsUrl((item.partsUrl || "").toString());
+				props.setTuningUrl((item.tuningUrl || "").toString());
+
+				props.setProductGroupId(item.productGroupId || null);
 
 				const dt = [
 					...item.description.map(el => ({id: el.id, text: el.text, detailType: DetailEnum.DESCRIPTION})),

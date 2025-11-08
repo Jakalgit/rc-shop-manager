@@ -1,0 +1,1 @@
+export {SimilarProductGroups} from './ui/SimilarProductGroups.tsx';

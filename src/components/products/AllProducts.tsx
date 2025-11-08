@@ -29,7 +29,7 @@ const AllProducts = () => {
 			const params = {
 				page,
 				limit: 24,
-				...(finder ?{finder} : {})
+				...(finder ? {finder} : {})
 			}
 
 			const result = await getProductPagination(params, act);

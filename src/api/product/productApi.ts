@@ -27,7 +27,7 @@ export const getProductPagination = async (
 	});
 
 	if (!searchParams.get('unavailable')) {
-		searchParams.set('unavailable', '1');
+		searchParams.set('unavailable', String(1));
 	}
 
 	const str = searchParams.toString();

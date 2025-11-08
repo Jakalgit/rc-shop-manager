@@ -13,7 +13,8 @@ const Contacts = () => {
 	const [loadingButton, setLoadingButton] = useState(false);
 
 	const [address, setAddress] = useState<string>("");
-	const [phone, setPhone] = useState<string>("");
+	const [phone1, setPhone1] = useState<string>("");
+	const [phone2, setPhone2] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [tgIdentifier, setTgIdentifier] = useState<string>("");
 	const [whatsappIdentifier, setWhatsappIdentifier] = useState<string>("");
@@ -28,10 +29,18 @@ const Contacts = () => {
 			placeholder: "Введите адрес...",
 		},
 		{
+			label: "Номер телефона (Основной)",
+			id: "phone",
+			value: phone1,
+			onChange: (e: React.ChangeEvent<HTMLInputElement>) => setPhone1(e.target.value),
+			placeholder: "Номер телефона (+7XXXXXXXXXX)...",
+			type: "phoneNumber"
+		},
+		{
 			label: "Номер телефона",
 			id: "phone",
-			value: phone,
-			onChange: (e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value),
+			value: phone2,
+			onChange: (e: React.ChangeEvent<HTMLInputElement>) => setPhone2(e.target.value),
 			placeholder: "Номер телефона (+7XXXXXXXXXX)...",
 			type: "phoneNumber"
 		},
@@ -65,7 +74,7 @@ const Contacts = () => {
 			setLoadingButton(true);
 			const act: string = cookies.get("act") || "";
 
-			await updateContacts({phone, address, email, tgIdentifier, whatsappIdentifier, workTime, act});
+			await updateContacts({phone1, phone2, address, email, tgIdentifier, whatsappIdentifier, workTime, act});
 
 			alert("Контакты успешно обновлены.");
 		} catch (e: any) {
@@ -81,7 +90,8 @@ const Contacts = () => {
 			const response = await getContacts();
 
 			setAddress(response.address);
-			setPhone(response.phone);
+			setPhone1(response.phone1);
+			setPhone2(response.phone2);
 			setEmail(response.email);
 			setTgIdentifier(response.tgIdentifier);
 			setWhatsappIdentifier(response.whatsappIdentifier);

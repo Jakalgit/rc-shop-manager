@@ -16,4 +16,6 @@ export type JsonProductType = {
 	description?: string[], // Описания товара
 	specifications?: string[], // Спецификации товара
 	equipment?: string[], // Комплектация товара
+	partsUrl?: string,
+	tuningUrl?: string,
 }

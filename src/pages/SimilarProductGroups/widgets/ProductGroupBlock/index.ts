@@ -1,0 +1,1 @@
+export {ProductGroupBlock} from './ui/ProductGroupBlock.tsx';

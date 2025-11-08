@@ -12,6 +12,7 @@ import Orders from "../pages/Orders.tsx";
 import Order from "../pages/Order.tsx";
 import {DeliveryAndPayments} from "../pages/DeliveryAndPayments.tsx";
 import Categories from "../pages/Categories.tsx";
+import {SimilarProductGroups} from "../pages/SimilarProductGroups";
 
 export interface RouteConfig {
 	path: string;
@@ -35,6 +36,7 @@ export const PathEnum = {
 	IMAGES: "/images",
 	ORDER: "/order/:orderNumber",
 	DELIVERY_AND_PAYMENTS: "/delivery-and-payments",
+	SIMILAR_PRODUCT_GROUPS: "/similar-product-groups",
 } as const;
 
 export const routes: RouteConfig[] = [
@@ -52,5 +54,6 @@ export const routes: RouteConfig[] = [
 	{ path: PathEnum.CONTACTS, component: <Contacts /> },
 	{ path: PathEnum.IMAGES, component: <></> },
 	{ path: PathEnum.ORDER, component: <Order /> },
-	{ path: PathEnum.DELIVERY_AND_PAYMENTS, component: <DeliveryAndPayments /> }
+	{ path: PathEnum.DELIVERY_AND_PAYMENTS, component: <DeliveryAndPayments /> },
+	{ path: PathEnum.SIMILAR_PRODUCT_GROUPS, component: <SimilarProductGroups /> }
 ]

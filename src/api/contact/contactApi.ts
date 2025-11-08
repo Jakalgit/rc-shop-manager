@@ -3,7 +3,7 @@ import type {ContactResponse} from "./types.ts";
 
 export const updateContacts = async (
 	{act, ...rest}:
-	{phone: string, address: string, email: string, tgIdentifier: string, whatsappIdentifier: string, workTime: string, act: string},
+	{phone1: string, phone2: string, address: string, email: string, tgIdentifier: string, whatsappIdentifier: string, workTime: string, act: string},
 ) => {
 	const {data} = await $host.put('/contact', rest, {headers: {Authorization: `Bearer ${act}`}});
 	return data;
