@@ -9,10 +9,10 @@ import RepairServices from "../pages/RepairServices.tsx";
 import PromotionSliderContent from "../pages/PromotionSliderContent.tsx";
 import Contacts from "../pages/Contacts.tsx";
 import Orders from "../pages/Orders.tsx";
-import Order from "../pages/Order.tsx";
 import {DeliveryAndPayments} from "../pages/DeliveryAndPayments.tsx";
 import Categories from "../pages/Categories.tsx";
 import {SimilarProductGroups} from "../pages/SimilarProductGroups";
+import {Order} from "../pages/Order";
 
 export interface RouteConfig {
 	path: string;

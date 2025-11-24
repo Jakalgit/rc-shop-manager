@@ -10,7 +10,7 @@ import {OrderStatusDescription} from "../consts/order-status-description.ts";
 import {PathEnum} from "../consts/routes.tsx";
 import Loading from "../components/Loading.tsx";
 
-function Order() {
+function Orders() {
 
 	const cookies = new Cookies();
 	const [searchParams, _] = useSearchParams();
@@ -106,4 +106,4 @@ function Order() {
 	)
 }
 
-export default Order;
+export default Orders;

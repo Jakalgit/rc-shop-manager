@@ -1,3 +1,4 @@
+import type {CdekMetadataType} from "./cdek.types.ts";
 
 export const DeliveryMethodEnum = {
 	SELF_PICKUP: "self_pickup",
@@ -91,6 +92,7 @@ export type OrderResponse = {
 	ipAddress?: string;
 	transactionId?: string;
 	profileId?: string;
+	cdekMetadata?: CdekMetadataType;
 	items: OrderItem[];
 	activities: OrderAction[];
 }

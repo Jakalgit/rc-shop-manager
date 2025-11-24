@@ -5,12 +5,14 @@ import {
 	type OrderItem,
 	type OrderResponse, OrderStatusEnum, PaymentMethodEnum,
 	PaymentStatusEnum
-} from "../api/order/types.ts";
-import {getOrderByNumber, saveOrder} from "../api/order/api.ts";
+} from "../../../api/order/types.ts";
+import {getOrderByNumber, saveOrder} from "../../../api/order/api.ts";
 import Cookies from "universal-cookie";
 import {useParams} from "react-router-dom";
-import Loading from "../components/Loading.tsx";
+import Loading from "../../../components/Loading.tsx";
 import {Col, Container, Row, Form, Table, Button, InputGroup} from "react-bootstrap";
+import "react-json-view-lite/dist/index.css";
+import {CdekInfo} from "../widgets/CdekInfo";
 
 const enumValues = <T extends Record<string, string>>(e: T) => Object.values(e) as Array<T[keyof T]>;
 
@@ -23,7 +25,7 @@ const toInputDateTime = (isoString: string | null | undefined) => {
 	return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
-function Order() {
+export function Order() {
 
 	const cookies = new Cookies();
 	const { orderNumber } = useParams<{ orderNumber: string }>();
@@ -179,7 +181,7 @@ function Order() {
 						<Form.Text>
 							self_pickup - самовывоз<br/>
 							delivery_moscow - доставка по Москве<br/>
-							delivery_country - доставка по России (в регионы)
+							delivery_country - доставка по России (через СДЕК)
 						</Form.Text>
 					</Form.Group>
 				</Col>
@@ -306,7 +308,12 @@ function Order() {
 								value={toInputDateTime(formState?.paidAt as any)}
 								onChange={e => handleChange("paidAt", (e.target.value === "" ? null : new Date(e.target.value).toISOString()) as any)}
 							/>
-							<Button variant="outline-secondary" onClick={() => handleChange("paidAt", null as any)}>Очистить</Button>
+							<Button
+								variant="outline-secondary"
+								onClick={() => handleChange("paidAt", null as any)}
+							>
+								Очистить
+							</Button>
 						</InputGroup>
 					</Form.Group>
 				</Col>
@@ -376,6 +383,10 @@ function Order() {
 					Комментарий от администратора для пользователя, например, как и где забрать заказ и т.п.
 				</Form.Text>
 			</Form.Group>
+
+			{formState?.cdekMetadata && (
+				<CdekInfo info={formState.cdekMetadata} />
+			)}
 
 			{/* Items (edit + delete) */}
 			<h4 className="mt-4">Товары</h4>
@@ -472,5 +483,3 @@ function Order() {
 		</Container>
 	)
 }
-
-export default Order;

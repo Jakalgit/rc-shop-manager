@@ -1,0 +1,1 @@
+export {CdekInfo} from './ui/CdekInfo';
