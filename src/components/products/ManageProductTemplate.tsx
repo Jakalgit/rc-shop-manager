@@ -53,6 +53,8 @@ export type GetDataProps = {
 	setPartsUrl: (value: React.SetStateAction<string>) => void;
 	setTuningUrl: (value: React.SetStateAction<string>) => void;
 	setProductGroupId: (value: React.SetStateAction<number | null>) => void;
+	setVisibility: (value: React.SetStateAction<boolean>) => void;
+	setAvailability: (value: React.SetStateAction<boolean>) => void;
 }
 
 interface IProps {
@@ -269,7 +271,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 		getData({
 			setAllTags, setFinderTags, setName, setPrice, setArticle, setCount, setOldPrice, setPromotionPercentage,
 			setWidth, setHeight, setLength, setWeight, setDetails, setPreviews, setSelectedTags, setWholesalePrice,
-			setPartsUrl, setTuningUrl, setProductGroupId
+			setPartsUrl, setTuningUrl, setProductGroupId, setVisibility, setAvailability
 		}).then(() => setLoading(false));
 	}
 
@@ -553,11 +555,11 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 						<Accordion.Body>
 							<Row>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="width">Ширина</Form.Label>
+									<Form.Label htmlFor="width">Ширина (см)</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="width"
-											placeholder="Ширина, м."
+											placeholder="Ширина, см."
 											aria-label="Ширина товара"
 											value={width}
 											onChange={(e) => setWidth(e.target.value)}
@@ -565,11 +567,11 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="height">Высота</Form.Label>
+									<Form.Label htmlFor="height">Высота (см)</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="height"
-											placeholder="Высота, м."
+											placeholder="Высота, см."
 											aria-label="Высота товара"
 											value={height}
 											onChange={(e) => setHeight(e.target.value)}
@@ -577,11 +579,11 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="lenght">Длина</Form.Label>
+									<Form.Label htmlFor="lenght">Длина (см)</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="lenght"
-											placeholder="Длина, м."
+											placeholder="Длина, см."
 											aria-label="Длина товара"
 											value={length}
 											onChange={(e) => setLength(e.target.value)}
@@ -589,11 +591,11 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 									</InputGroup>
 								</Form.Group>
 								<Form.Group as={Col} lg="3">
-									<Form.Label htmlFor="weight">Вес</Form.Label>
+									<Form.Label htmlFor="weight">Вес (г)</Form.Label>
 									<InputGroup>
 										<Form.Control
 											id="weight"
-											placeholder="Вес, кг."
+											placeholder="Вес, г."
 											aria-label="Вес товара"
 											value={weight}
 											onChange={(e) => setWeight(e.target.value)}

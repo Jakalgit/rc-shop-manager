@@ -60,6 +60,10 @@ const Product = () => {
 			if (props.partsUrl) formData.append("partsUrl", props.partsUrl);
 			if (props.tuningUrl) formData.append("tuningUrl", props.tuningUrl);
 			if (props.productGroupId) formData.append('productGroupId', String(props.productGroupId));
+			if (props.width) formData.append("width", String(props.width));
+			if (props.height) formData.append("height", String(props.height));
+			if (props.weight) formData.append("weight", String(props.weight));
+			if (props.length) formData.append("length", String(props.length));
 
 			formData.append("previews", JSON.stringify(
 				props.previews.map((el, index) => {
@@ -114,9 +118,11 @@ const Product = () => {
 			const [responseTags, responseData] = await Promise.all([
 				getAllTags({act}),
 				getProductPagination({id: Number(id)}, act),
-			])
+			]);
 			props.setAllTags(responseTags);
 			props.setFinderTags(responseTags);
+
+			console.log(responseData.records[0]);
 
 			if (responseData.records.length !== 0) {
 				const item = responseData.records[0];
@@ -134,6 +140,9 @@ const Product = () => {
 				props.setLength((item.length || "").toString());
 				props.setWidth((item.width || "").toString());
 				props.setHeight((item.height || "").toString());
+
+				props.setVisibility(item.visibility);
+				props.setAvailability(item.availability);
 
 				props.setPartsUrl((item.partsUrl || "").toString());
 				props.setTuningUrl((item.tuningUrl || "").toString());
