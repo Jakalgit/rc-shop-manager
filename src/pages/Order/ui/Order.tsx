@@ -367,12 +367,12 @@ export function Order() {
 					onChange={e => handleChange("comment", (e.target.value.trim() === "" ? null : e.target.value) as any)}
 				/>
 				<Form.Text>
-					Комментарий клиента
+					Комментарий клиента, клиент его оставляет при оформлении заказа
 				</Form.Text>
 			</Form.Group>
 
 			<Form.Group className="mb-3">
-				<Form.Label>Системный комментарий</Form.Label>
+				<Form.Label>Комментарий продавца</Form.Label>
 				<Form.Control
 					as="textarea"
 					rows={2}
@@ -380,7 +380,7 @@ export function Order() {
 					onChange={e => handleChange("systemComment", (e.target.value.trim() === "" ? null : e.target.value) as any)}
 				/>
 				<Form.Text>
-					Комментарий от администратора для пользователя, например, как и где забрать заказ и т.п.
+					Комментарий от администратора для пользователя, например, как и где забрать заказ и т.п. То есть он нужен если мы хотим что-то сообщить клиенту
 				</Form.Text>
 			</Form.Group>
 
@@ -465,8 +465,11 @@ export function Order() {
 
 			{/* Comment + Save */}
 			<Form.Group className="mb-3">
-				<Form.Label>Комментарий к изменению</Form.Label>
+				<Form.Label>Комментарий к изменению (чтобы отследить изменения)</Form.Label>
 				<Form.Control as="textarea" rows={3} value={actionComment} onChange={e => setActionComment(e.target.value)}/>
+				<Form.Text>
+					Комментарий нужен чтобы потом можно было отследить действия с заказом, этот комментарий пользователи не видят
+				</Form.Text>
 			</Form.Group>
 
 			<div className="d-flex gap-2 mb-3">
