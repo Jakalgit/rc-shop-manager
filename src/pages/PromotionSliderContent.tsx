@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Button, Col, Container, Row, Spinner} from "react-bootstrap";
-import type {SlideResponse} from "../api/promotion-slider/types.ts";
+import {type SlideResponse, SliderTagEnum} from "../api/promotion-slider/types.ts";
 import {getSlides, updateSlides} from "../api/promotion-slider/promotionSliderApi.ts";
 import Cookies from "universal-cookie";
 import SliderCard from "../components/promotion-slider/SliderCard.tsx";
@@ -12,6 +12,8 @@ export type NewSlide = {
 	title: string;
 	text: string;
 	buttonText: string;
+	tagType: SliderTagEnum;
+	price: number | null;
 }
 
 const PromotionSliderContent = () => {
@@ -23,7 +25,19 @@ const PromotionSliderContent = () => {
 	const [slides, setSlides] = useState<(SlideResponse | NewSlide)[]>([]);
 
 	const addNewSlide = () => {
-		setSlides(prevState => [...prevState, {id: -Date.now(), file: null, href: '', buttonText: '', title: '', text: ''}]);
+		setSlides(prevState => [
+			...prevState,
+			{
+				id: -Date.now(),
+				file: null,
+				href: '',
+				buttonText: '',
+				title: '',
+				text: '',
+				tagType: SliderTagEnum.NONE,
+				price: null,
+			}]
+		);
 	}
 
 	const removeSlide = (id: number) => {
@@ -93,6 +107,8 @@ const PromotionSliderContent = () => {
 						title: slide.title,
 						text: slide.text,
 						buttonText: slide.buttonText,
+						tagType: slide.tagType,
+						price: slide.price,
 					}
 				} else {
 					return {
@@ -102,6 +118,8 @@ const PromotionSliderContent = () => {
 						title: slide.title,
 						text: slide.text,
 						buttonText: slide.buttonText,
+						tagType: slide.tagType,
+						price: slide.price,
 					}
 				}
 			});

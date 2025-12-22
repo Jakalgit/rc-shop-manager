@@ -1,9 +1,10 @@
 import React, {type ChangeEvent, useRef} from 'react';
 import {Button, Card, Col, Image, Row} from "react-bootstrap";
-import type {SlideResponse} from "../../api/promotion-slider/types.ts";
+import {type SlideResponse, SliderTagEnum} from "../../api/promotion-slider/types.ts";
 import type {NewSlide} from "../../pages/PromotionSliderContent.tsx";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import {isNumeric} from "../../functions/isNumeric.ts";
 
 interface IProps {
 	slide: SlideResponse | NewSlide;
@@ -28,6 +29,38 @@ const SliderCard: React.FC<IProps> = ({ slide, slides, moveDown, moveUp, removeS
 		const file = e.target.files[0];
 		pinFileForSlide(slide.id, file);
 	}
+
+	const handleChangePrice = React.useCallback((e: any) => {
+
+		if (e.target.value.length === 0) {
+			updateValueForSlide<typeof slide, 'price'>(slide.id, 'price', null);
+		} else if (isNumeric(e.target.value)) {
+			updateValueForSlide<typeof slide, 'price'>(slide.id, 'price', Number(e.target.value));
+		}
+	}, []);
+
+	const sliderTagBoxes = [
+		{
+			title: 'Нет',
+			checked: slide.tagType === SliderTagEnum.NONE,
+			onChange: () => updateValueForSlide<typeof slide, 'tagType'>(slide.id, 'tagType', SliderTagEnum.NONE),
+		},
+		{
+			title: 'Новинки',
+			checked: slide.tagType === SliderTagEnum.NEW,
+			onChange: () => updateValueForSlide<typeof slide, 'tagType'>(slide.id, 'tagType', SliderTagEnum.NEW),
+		},
+		{
+			title: 'Популярное',
+			checked: slide.tagType === SliderTagEnum.POPULAR,
+			onChange: () => updateValueForSlide<typeof slide, 'tagType'>(slide.id, 'tagType', SliderTagEnum.POPULAR),
+		},
+		{
+			title: 'В пути',
+			checked: slide.tagType === SliderTagEnum.ON_THE_WAY,
+			onChange: () => updateValueForSlide<typeof slide, 'tagType'>(slide.id, 'tagType', SliderTagEnum.ON_THE_WAY),
+		}
+	];
 
 	return (
 		<Col className="mt-3" md={12}>
@@ -134,6 +167,41 @@ const SliderCard: React.FC<IProps> = ({ slide, slides, moveDown, moveUp, removeS
 								</InputGroup>
 							</Form.Group>
 						</Row>
+					</Row>
+					<Row className="mt-3">
+						<Form.Label>
+							Тег слайда
+						</Form.Label>
+						{sliderTagBoxes.map((tag, index) =>
+							<Col key={index} lg={3}>
+								<Form.Group>
+									<Form.Check type={"radio"}>
+										<Form.Check.Input
+											name={`slide-tag-${slide.id}`}
+											defaultChecked={tag.checked}
+											type={"radio"}
+											onClick={tag.onChange}
+										/>
+										<Form.Check.Label>{tag.title}</Form.Check.Label>
+									</Form.Check>
+								</Form.Group>
+							</Col>
+						)}
+					</Row>
+					<Row className="mt-3">
+						<Form.Group as={Col} md="12">
+							<Form.Label>
+								Цена товара на слайде (опционально)
+							</Form.Label>
+							<InputGroup>
+								<Form.Control
+									placeholder="Введите цену"
+									aria-label="Цена товара на слайде (опционально)"
+									value={slide.price || ''}
+									onChange={handleChangePrice}
+								/>
+							</InputGroup>
+						</Form.Group>
 					</Row>
 					<Row className="mt-4">
 						{slide.id !== slides[0].id && (
