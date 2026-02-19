@@ -1,17 +1,19 @@
-import {useState} from 'react';
-import {useParams} from "react-router-dom";
-import {Container} from "react-bootstrap";
+import React, {useState} from 'react';
+import {useNavigate, useParams} from "react-router-dom";
+import {Button, Container} from "react-bootstrap";
 import Cookies from "universal-cookie";
 import {DetailEnum} from "../api/product/types.ts";
 import {isNumeric} from "../functions/isNumeric.ts";
-import {getProductPagination, updateProduct} from "../api/product/productApi.ts";
+import {deleteProduct, getProductPagination, updateProduct} from "../api/product/productApi.ts";
 import {getAllTags} from "../api/tag/tagApi.ts";
 import ManageProductTemplate, {type GetDataProps, type ISaveProductArguments} from "../components/products/ManageProductTemplate.tsx";
+import {PathEnum} from "../consts/routes.tsx";
 
 const Product = () => {
 	const { id } = useParams<{ id: string }>();
 
 	const cookies = new Cookies();
+	const navigate = useNavigate();
 
 	const [loadingSaveButton, setLoadingSaveButton] = useState(false);
 
@@ -165,6 +167,23 @@ const Product = () => {
 		}
 	}
 
+	const handleClickDeleteItem = React.useCallback(async () => {
+		if (!id) return;
+
+		if (confirm('Вы уверены что хотите удалить товар? Это последнее предупреждение.')) {
+			try {
+				const act: string = cookies.get("act") || "";
+
+				await deleteProduct(id, act);
+				alert('Товар успешно удалён');
+				navigate(PathEnum.PRODUCTS);
+			} catch (e) {
+				console.error(e);
+				alert('Ошибка удаления');
+			}
+		}
+	}, [id]);
+
 	return (
 		<Container className="mt-5">
 			<ManageProductTemplate
@@ -173,6 +192,13 @@ const Product = () => {
 				loadingSaveButton={loadingSaveButton}
 				id={Number(id)}
 			/>
+			<Button
+				className="mt-3 mb-3 w-100"
+				variant="danger"
+				onClick={handleClickDeleteItem}
+			>
+				Удалить товар
+			</Button>
 		</Container>
 	);
 };

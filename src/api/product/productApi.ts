@@ -38,3 +38,8 @@ export const getProductPagination = async (
 	);
 	return data;
 }
+
+export const deleteProduct = async (id: string, act: string): Promise<void> => {
+	const {data} = await $host.delete(`/product/${id}`, {headers: {Authorization: `Bearer ${act}`}});
+	return data;
+}
