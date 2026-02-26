@@ -49,8 +49,6 @@ export const ProductGroupsAccordion: React.FC<ProductGroupsListProps> = React.me
 		if (!productGroupId) return;
 
 		try {
-			console.log('weofijweojifojiew');
-
 			const act = cookies.get('act') || '';
 
 			const response = await getProductGroup({id: productGroupId, token: act });

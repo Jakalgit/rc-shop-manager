@@ -2,12 +2,13 @@ import {Accordion, Button, Col, Row, Spinner} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import {isNumeric} from "../../functions/isNumeric.ts";
-import {DetailEnum} from "../../api/product/types.ts";
+import {DetailEnum, type ProductResponse} from "../../api/product/types.ts";
 import ImageSelector from "./image-selector/ImageSelector.tsx";
 import React, {type ChangeEvent, useEffect, useRef, useState} from "react";
 import type {TagResponse} from "../../api/tag/types.ts";
 import type {JsonProductType} from "../../types/json-product.type.ts";
 import {ProductGroupsAccordion} from "./ProductGroupsAccordion.tsx";
+import {CopyProductPopup} from "../../widgets/CopyProductPopup";
 
 export interface ISaveProductArguments {
 	id?: number,
@@ -68,6 +69,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 
 	const inputJsonFileRef = useRef<HTMLInputElement>(null);
 	const [loading, setLoading] = useState(false);
+	const [isOpenCopyPopup, setIsOpenCopyPopup] = useState(false);
 
 	const [previews, setPreviews] = useState<{imageId?: number, filename: string}[]>([]);
 	const [files, setFiles] = useState<File[]>([]);
@@ -267,6 +269,47 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 		});
 	}
 
+	const setCopiedProduct = React.useCallback((product: ProductResponse) => {
+		setName(product.name);
+		setAvailability(product.availability);
+		setVisibility(product.visibility);
+		setArticle(product.article);
+		setCount(product.count);
+		setPrice(product.price.toString());
+		setWholesalePrice(product.wholesalePrice.toString());
+		if (product.oldPrice) setOldPrice(product.oldPrice.toString());
+		if (product.promotionPercentage) setPromotionPercentage(product.promotionPercentage.toString());
+		if (product.weight) setWeight(product.weight.toString());
+		if (product.width) setWidth(product.width.toString());
+		if (product.height) setHeight(product.height.toString());
+		if (product.length) setLength(product.length.toString());
+		setPartsUrl(product.partsUrl || '');
+		setTuningUrl(product.tuningUrl || '');
+		if (product.productGroupId) setProductGroupId(product.productGroupId);
+
+		const descriptions = product.description
+			.map(
+				(el, i) => ({ id: Date.now() + i, text: el.text, detailType: DetailEnum.DESCRIPTION })
+			) as { id: number, text: string, detailType: DetailEnum }[];
+		const specifications = product.specification
+			.map(
+				(el, i) => ({ id: Date.now() + i, text: el.text, detailType: DetailEnum.SPECIFICATION })
+			) as { id: number, text: string, detailType: DetailEnum }[];
+		const equipment = product.equipment
+			.map(
+				(el, i) => ({ id: Date.now() + i, text: el.text, detailType: DetailEnum.EQUIPMENT })
+			) as { id: number, text: string, detailType: DetailEnum }[];
+
+		const _details = [
+			...descriptions,
+			...specifications,
+			...equipment,
+		]
+		setDetails(_details);
+
+		setSelectedTags(product.tags);
+	}, []);
+
 	const fetchData = async () => {
 		getData({
 			setAllTags, setFinderTags, setName, setPrice, setArticle, setCount, setOldPrice, setPromotionPercentage,
@@ -309,6 +352,13 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 
 	return (
 		<>
+			<CopyProductPopup
+				modalAttrs={{
+					show: isOpenCopyPopup,
+					onHide: () => setIsOpenCopyPopup(false),
+				}}
+				setCopiedProduct={setCopiedProduct}
+			/>
 			<Row>
 				<Button
 					className="mb-2"
@@ -325,6 +375,16 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 						<>Сохранить товар в базе данных</>
 					)}
 				</Button>
+				{typeof id === 'undefined' && (
+					<Button
+						className="mb-2"
+						type="submit"
+						variant="primary"
+						onClick={() => setIsOpenCopyPopup(true)}
+					>
+						Скопировать существующий товар
+					</Button>
+				)}
 				<Button
 					className="mb-4"
 					type="submit"
