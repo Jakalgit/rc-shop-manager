@@ -289,15 +289,15 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 
 		const descriptions = product.description
 			.map(
-				(el, i) => ({ id: Date.now() + i, text: el.text, detailType: DetailEnum.DESCRIPTION })
+				(el, _) => ({ id: -(Date.now() + el.id), text: el.text, detailType: DetailEnum.DESCRIPTION })
 			) as { id: number, text: string, detailType: DetailEnum }[];
 		const specifications = product.specification
 			.map(
-				(el, i) => ({ id: Date.now() + i, text: el.text, detailType: DetailEnum.SPECIFICATION })
+				(el, _) => ({ id: -(Date.now() + el.id), text: el.text, detailType: DetailEnum.SPECIFICATION })
 			) as { id: number, text: string, detailType: DetailEnum }[];
 		const equipment = product.equipment
 			.map(
-				(el, i) => ({ id: Date.now() + i, text: el.text, detailType: DetailEnum.EQUIPMENT })
+				(el, _) => ({ id: -(Date.now() + el.id), text: el.text, detailType: DetailEnum.EQUIPMENT })
 			) as { id: number, text: string, detailType: DetailEnum }[];
 
 		const _details = [
