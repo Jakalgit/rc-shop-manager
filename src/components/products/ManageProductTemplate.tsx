@@ -68,7 +68,7 @@ interface IProps {
 const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadingSaveButton, id, getData }) => {
 
 	const inputJsonFileRef = useRef<HTMLInputElement>(null);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [isOpenCopyPopup, setIsOpenCopyPopup] = useState(false);
 
 	const [previews, setPreviews] = useState<{imageId?: number, filename: string}[]>([]);
@@ -102,6 +102,8 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 	const [tuningUrl, setTuningUrl] = useState<string>('');
 
 	const [details, setDetails] = useState<{id: number, text: string, detailType: DetailEnum}[]>([]);
+	const [globalDescription, setGlobalDescription] = useState<string>('');
+	const globalDescriptionLoaded = useRef<boolean>(false);
 
 	const handleJsonAddClick = () => {
 		inputJsonFileRef.current?.click();
@@ -306,6 +308,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			...equipment,
 		]
 		setDetails(_details);
+		setGlobalDescription(descriptions.map(el => el.text).join('\n\n'));
 
 		setSelectedTags(product.tags);
 	}, []);
@@ -317,10 +320,6 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			setPartsUrl, setTuningUrl, setProductGroupId, setVisibility, setAvailability
 		}).then(() => setLoading(false));
 	}
-
-	useEffect(() => {
-		fetchData();
-	}, []);
 
 	useEffect(() => {
 		if (isNumeric(promotionPercentage) && Number(price)) {
@@ -341,6 +340,38 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 			);
 		}
 	}, [finderTagsText]);
+
+	useEffect(() => {
+		if (!globalDescriptionLoaded.current && details.length > 0) {
+			setGlobalDescription(details.filter(
+				el => el.detailType === DetailEnum.DESCRIPTION
+			).map(el => el.text).join('\n\n'));
+			globalDescriptionLoaded.current = true;
+		}
+	}, [details]);
+
+	useEffect(() => {
+		setDetails(prevState => prevState.filter(
+			el => el.detailType !== DetailEnum.DESCRIPTION
+		));
+
+		const blocks = globalDescription
+			.split(/\n{2,}/)
+			.map(block => block.trim())
+			.filter(Boolean);
+
+		const descriptions = blocks.map(el => ({
+			id: -Date.now(),
+			text: el,
+			detailType: DetailEnum.DESCRIPTION,
+		}));
+
+		setDetails(prevState => [...prevState, ...descriptions])
+	}, [globalDescription]);
+
+	useEffect(() => {
+		fetchData();
+	}, []);
 
 	if (loading) {
 		return (
@@ -677,37 +708,18 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 				<Accordion>
 					<Accordion.Item eventKey="0">
 						<Accordion.Header>
-							Описания ({details.filter(el => el.detailType === DetailEnum.DESCRIPTION).length} элементов)
+							Описание
 						</Accordion.Header>
 						<Accordion.Body>
-							<Button
-								onClick={() => addDetail(DetailEnum.DESCRIPTION)}
-								variant="primary"
-								type="submit"
-								className="mb-4"
-							>
-								Добавить описание
-							</Button>
-							{details.filter(el => el.detailType === DetailEnum.DESCRIPTION).map(el =>
-								<Form.Group key={el.id} className="mb-3" controlId={`description.ControlTextarea${el.id}`}>
-									<Form.Label>Описание (id: {el.id})</Form.Label>
-									<Form.Control
-										as="textarea"
-										rows={3}
-										value={el.text}
-										onChange={(e) => changeDetailText(el.id, e.target.value)}
-										placeholder="Введите текст*"
-									/>
-									<Button
-										variant="danger"
-										type="submit"
-										className="mt-2"
-										onClick={() => deleteDetail(el.id)}
-									>
-										Удалить
-									</Button>
-								</Form.Group>
-							)}
+							<Form.Group className="mb-3" controlId={`description.ControlTextarea`}>
+								<Form.Control
+									as="textarea"
+									rows={15}
+									value={globalDescription}
+									onChange={(e) => setGlobalDescription(e.target.value)}
+									placeholder="Введите текст*"
+								/>
+							</Form.Group>
 						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="1">
