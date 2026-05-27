@@ -345,7 +345,7 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 		if (!globalDescriptionLoaded.current && details.length > 0) {
 			setGlobalDescription(details.filter(
 				el => el.detailType === DetailEnum.DESCRIPTION
-			).map(el => el.text).join('\n\n'));
+			).map(el => el.text).join('\n'));
 			globalDescriptionLoaded.current = true;
 		}
 	}, [details]);
@@ -356,9 +356,11 @@ const ManageProductTemplate: React.FC<IProps> = ({ saveProductInDatabase, loadin
 		));
 
 		const blocks = globalDescription
-			.split(/\n{2,}/)
+			.split(/\n/)
 			.map(block => block.trim())
 			.filter(Boolean);
+
+		console.log(blocks);
 
 		const descriptions = blocks.map(el => ({
 			id: -Date.now(),
