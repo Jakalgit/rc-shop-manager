@@ -2,13 +2,20 @@ import React from "react";
 import {Button, Card, Container} from "react-bootstrap";
 import Cookies from "universal-cookie";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {getChatList} from "../../../api/chat/api.ts";
+import {getChatList, getChatListTg} from "../../../api/chat/api.ts";
 import type {Chat} from "../../../api/chat/types.ts";
 import PaginationComponent from "../../../components/PaginationComponent.tsx";
+import {useTelegram} from "../../../shared/hooks/useTelegram.ts";
 
-export const Messages = React.memo(() => {
+interface MessagesProps {
+	fromTg?: boolean;
+}
+
+export const Messages: React.FC<MessagesProps> = React.memo(({ fromTg }) => {
 
 	const cookies = new Cookies();
+	const tg = useTelegram();
+
 	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate();
 	const page = Number(searchParams.get('page')) || 1;
@@ -22,26 +29,37 @@ export const Messages = React.memo(() => {
 	}, []);
 
 	const toChat = React.useCallback((clientId: string) => {
-		navigate(`/chat/${clientId}`);
-	}, []);
+		if (fromTg) {
+			navigate(`/chat-tg/${clientId}`);
+		} else {
+			navigate(`/chat/${clientId}`);
+		}
+	}, [fromTg]);
 
 	React.useEffect(() => {
 		async function getData() {
 			try {
-				const act: string = cookies.get("act");
+				let response;
 
-				const response = await getChatList({page, pageCount: 12, token: act});
+				if (fromTg) {
+					if (!tg) return;
+					response = await getChatListTg({page, pageCount: 12, tg});
+				} else {
+					const act: string = cookies.get("act");
+
+					response = await getChatList({page, pageCount: 12, token: act});
+				}
 
 				setChats(response.records);
 				setTotalPages(response.totalPages);
 				setLoading(false);
 			} catch (e) {
-				console.error(e);
+				console.error('Messages', e);
 			}
 		}
 
 		getData();
-	}, [page]);
+	}, [page, tg]);
 
 	if (loading) {
 		return <div>Загрузка...</div>

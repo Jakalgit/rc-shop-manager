@@ -2,13 +2,20 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import React from "react";
 import {Container} from "react-bootstrap";
 import {ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
-import {getChatMessages, sendMessage} from "../../../api/chat/api.ts";
+import {getChatMessages, sendMessage, sendMessageFromTg} from "../../../api/chat/api.ts";
 import {useParams} from "react-router-dom";
 import type {ChatMessage} from "../../../api/chat/types.ts";
 import Cookies from "universal-cookie";
 import {useChatSocket} from "../lib/utils.ts";
+import {useTelegram} from "../../../shared/hooks/useTelegram.ts";
 
-export const Chat = React.memo(() => {
+interface ChatProps {
+	fromTg?: boolean;
+}
+
+export const Chat: React.FC<ChatProps> = React.memo(({ fromTg }) => {
+
+	const tg = useTelegram();
 
 	const cookies = new Cookies();
 	const params = useParams<{ clientId: string }>();
@@ -18,12 +25,20 @@ export const Chat = React.memo(() => {
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [messages, setMessages] = React.useState<ChatMessage[]>([]);
 	const [messageText, setMessageText] = React.useState<string>('');
+	const [loadingSend, setLoadingSend] = React.useState<boolean>(false);
 
 	const handleClickSend = React.useCallback(async () => {
 		try {
-			const act: string = cookies.get('act');
+			if (loadingSend) return;
+			setLoadingSend(true);
 
-			await sendMessage({message: messageText, clientId, token: act});
+			if (fromTg) {
+				await sendMessageFromTg({message: messageText, clientId, tg});
+			} else {
+				const act: string = cookies.get('act');
+
+				await sendMessage({message: messageText, clientId, token: act});
+			}
 
 			setMessages(prev => [...prev, {message: messageText, fromUser: false}]);
 			setMessageText('');
@@ -31,7 +46,8 @@ export const Chat = React.memo(() => {
 			console.error(e);
 			alert('Ошибка отправки сообщения');
 		}
-	}, [messageText])
+		setLoadingSend(false);
+	}, [messageText, loadingSend])
 
 	React.useEffect(() => {
 		async function getData() {
@@ -71,7 +87,7 @@ export const Chat = React.memo(() => {
 
 	return (
 		<Container fluid>
-			<div style={{ position: "relative", height: "100vh" }}>
+			<div style={{ position: "relative", height: fromTg ? "87vh" : "100vh" }}>
 				<MainContainer>
 					<ChatContainer>
 						<MessageList>
