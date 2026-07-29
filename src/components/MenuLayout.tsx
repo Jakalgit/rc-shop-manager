@@ -74,6 +74,11 @@ function MenuLayout() {
 			name: 'Заказы',
 			eventKey: 'orders',
 			path: PathEnum.ORDERS,
+		},
+		{
+			name: 'Сообщения',
+			eventKey: 'messages',
+			path: PathEnum.MESSAGES
 		}
 	];
 

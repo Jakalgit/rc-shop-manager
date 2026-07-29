@@ -13,6 +13,10 @@ import {DeliveryAndPayments} from "../pages/DeliveryAndPayments.tsx";
 import Categories from "../pages/Categories.tsx";
 import {SimilarProductGroups} from "../pages/SimilarProductGroups";
 import {Order} from "../pages/Order";
+import {Messages} from "../pages/Messages";
+import {Chat} from "../pages/Chat";
+import {ChatsTg} from "../pages/telegram/ChatsTg";
+import {ChatMessagesTg} from "../pages/telegram/ChatMessagesTg";
 
 export interface RouteConfig {
 	path: string;
@@ -37,6 +41,10 @@ export const PathEnum = {
 	ORDER: "/order/:orderNumber",
 	DELIVERY_AND_PAYMENTS: "/delivery-and-payments",
 	SIMILAR_PRODUCT_GROUPS: "/similar-product-groups",
+	MESSAGES: "/messages",
+	CHAT: "/chat/:clientId",
+	CHATS_TG: "/chats-tg",
+	CHAT_MESSAGES_TG: "/chat-tg/:clientId",
 } as const;
 
 export const routes: RouteConfig[] = [
@@ -55,5 +63,12 @@ export const routes: RouteConfig[] = [
 	{ path: PathEnum.IMAGES, component: <></> },
 	{ path: PathEnum.ORDER, component: <Order /> },
 	{ path: PathEnum.DELIVERY_AND_PAYMENTS, component: <DeliveryAndPayments /> },
-	{ path: PathEnum.SIMILAR_PRODUCT_GROUPS, component: <SimilarProductGroups /> }
+	{ path: PathEnum.SIMILAR_PRODUCT_GROUPS, component: <SimilarProductGroups /> },
+	{ path: PathEnum.MESSAGES, component: <Messages /> },
+	{ path: PathEnum.CHAT, component: <Chat /> },
+]
+
+export const routesTg: RouteConfig[] = [
+	{ path: PathEnum.CHATS_TG, component: <ChatsTg /> },
+	{ path: PathEnum.CHAT_MESSAGES_TG, component: <ChatMessagesTg /> }
 ]

@@ -1,0 +1,1 @@
+export {ChatsTg} from './ui/ChatsTg.tsx';
